@@ -3,13 +3,13 @@
 import { createContext, useContext } from 'react'
 
 const api = {
-  baseUrl: 'http://localhost:8000/api',
-  endpoints: {
-    login: '/token/',
-    register: '/register/',
-    entries: '/entries/',
-    profile: '/user/profile/'
-  }
+    baseUrl: 'http://localhost:8000/api',
+    endpoints: {
+        test: '/test/',
+        login: '/token/',
+        listAccounts: '/accounts/',
+        accountDetail: (id: number) => `/accounts/${id}/`,
+    }
 }
 
 const ApiContext = createContext(api)
@@ -17,5 +17,5 @@ const ApiContext = createContext(api)
 export const useApi = () => useContext(ApiContext)
 
 export function ApiProvider({ children }: { children: React.ReactNode }) {
-  return <ApiContext.Provider value={api}>{children}</ApiContext.Provider>
+    return <ApiContext.Provider value={api}>{children}</ApiContext.Provider>
 }
