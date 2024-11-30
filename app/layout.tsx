@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ApiProvider } from "./context/ApiContext";
+import { DeleteModalProvider } from "./context/DeleteModalContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -36,7 +37,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ApiProvider>
-          {children}
+          <DeleteModalProvider>
+            {children}
+          </DeleteModalProvider>
         </ApiProvider>
       </body>
     </html>

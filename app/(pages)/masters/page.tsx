@@ -5,6 +5,7 @@ import Header from '@/app/components/Header'
 import { useApi } from '@/app/context/ApiContext'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { useDeleteModal } from '@/app/context/DeleteModalContext'
 
 interface Account {
     id: number;
@@ -27,6 +28,7 @@ interface Task {
 
 const Page = () => {
     const api = useApi()
+    const { showDeleteModal } = useDeleteModal()
     const [accounts, setAccounts] = useState<Account[]>([])
     const [categories, setCategories] = useState<Category[]>([])
     const [tasks, setTasks] = useState<Task[]>([])
@@ -55,6 +57,10 @@ const Page = () => {
             })
         }
     }
+
+    const handleDeleteClick = (itemType: string, id: number, deleteFunction: () => void) => {
+        showDeleteModal(itemType, deleteFunction);
+    };
 
     const fetchAccounts = async () => {
         try {
@@ -272,7 +278,11 @@ const Page = () => {
                                                         {account.number}
                                                     </td>
                                                     <td className="min-w-24 text-right flex items-center space-x-2 whitespace-nowrap">
-                                                        <button onClick={() => deleteAccount(account.id)} className="p-1 text-red-600 hover:text-red-800 transition-colors duration-150" title="Delete account">
+                                                        <button 
+                                                            onClick={() => handleDeleteClick('account', account.id, () => deleteAccount(account.id))}
+                                                            className="p-1 text-red-600 hover:text-red-800 transition-colors duration-150"
+                                                            title="Delete account"
+                                                        >
                                                             <i className="fas fa-trash-alt w-5 h-5"></i>
                                                         </button>
                                                     </td>
@@ -326,7 +336,11 @@ const Page = () => {
                                                         {category.name}
                                                     </td>
                                                     <td className="min-w-24 text-right flex items-center space-x-2 whitespace-nowrap">
-                                                        <button onClick={() => deleteCategory(category.id)} className="p-1 text-red-600 hover:text-red-800 transition-colors duration-150" title="Delete category">
+                                                        <button 
+                                                            onClick={() => handleDeleteClick('category', category.id, () => deleteCategory(category.id))}
+                                                            className="p-1 text-red-600 hover:text-red-800 transition-colors duration-150"
+                                                            title="Delete category"
+                                                        >
                                                             <i className="fas fa-trash-alt w-5 h-5"></i>
                                                         </button>
                                                     </td>
@@ -370,7 +384,11 @@ const Page = () => {
                                                         {task.title}
                                                     </td>
                                                     <td className="min-w-24 text-right flex items-center space-x-2 whitespace-nowrap">
-                                                        <button onClick={() => deleteTask(task.id)} className="p-1 text-red-600 hover:text-red-800 transition-colors duration-150" title="Delete category">
+                                                        <button 
+                                                            onClick={() => handleDeleteClick('task', task.id, () => deleteTask(task.id))}
+                                                            className="p-1 text-red-600 hover:text-red-800 transition-colors duration-150"
+                                                            title="Delete task"
+                                                        >
                                                             <i className="fas fa-trash-alt w-5 h-5"></i>
                                                         </button>
                                                     </td>
