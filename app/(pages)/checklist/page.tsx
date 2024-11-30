@@ -61,7 +61,7 @@ const page = () => {
                                 className={`tab-button w-full py-2 rounded-lg shadow-md focus:outline-none transition-colors duration-200 ${
                                     activeTab === 'today' 
                                     ? 'bg-gradient-to-r from-blue-400 to-blue-500 text-white' 
-                                    : 'text-gray-600 bg-white'
+                                    : 'text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800'
                                 }`}
                             >
                                 TODAY
@@ -71,7 +71,7 @@ const page = () => {
                                 className={`tab-button w-full py-2 rounded-lg shadow-md focus:outline-none transition-colors duration-200 ${
                                     activeTab === 'previous' 
                                     ? 'bg-gradient-to-r from-blue-400 to-blue-500 text-white' 
-                                    : 'text-gray-600 bg-white'
+                                    : 'text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800'
                                 }`}
                             >
                                 PREVIOUS
@@ -84,10 +84,10 @@ const page = () => {
                             <button
                                 key={todo.id}
                                 onClick={() => toggleTodo(todo.id)}
-                                className={`flex items-center justify-between p-4 transition-colors duration-150 ease-in-out rounded-lg border border-gray-100 ${
+                                className={`flex items-center justify-between p-4 transition-colors duration-150 ease-in-out rounded-lg border border-gray-100 dark:border-gray-700 ${
                                     todo.completed 
                                     ? 'bg-gradient-to-r from-green-400 to-green-500 text-white' 
-                                    : 'bg-white shadow-md hover:shadow-lg'
+                                    : 'bg-white dark:bg-gray-800 shadow-md hover:shadow-lg'
                                 }`}
                             >
                                 <div className="flex items-center">
@@ -95,23 +95,26 @@ const page = () => {
                                         <i className="fas fa-check-circle text-lg mr-3"></i>
                                     )}
                                     <h3 className={`text-sm font-medium ${
-                                        todo.completed ? 'text-white' : 'text-gray-900'
+                                        todo.completed ? 'text-white' : 'text-gray-900 dark:text-gray-100'
                                     }`}>
                                         {todo.text}
                                     </h3>
                                 </div>
                             </button>
                         ))}
-                        {activeTab === 'previous' && previousDays.map((date) => (
-                            <button
-                                key={date}
-                                onClick={() => {/* Handle date click */}}
-                                className="flex items-center justify-center p-4 hover:bg-gray-50 transition-colors duration-150 ease-in-out rounded-lg border border-gray-100 bg-white shadow-md hover:shadow-lg"
+
+                        {activeTab === 'previous' && previousDays.map((day, index) => (
+                            <div
+                                key={index}
+                                className="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-700 shadow-md"
                             >
-                                <h3 className="text-sm font-medium text-gray-900">
-                                    {formatDate(date)}
-                                </h3>
-                            </button>
+                                <div className="flex items-center justify-between">
+                                    <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                        {formatDate(day)}
+                                    </h3>
+                                    <i className="fas fa-check-circle text-green-500"></i>
+                                </div>
+                            </div>
                         ))}
                     </div>
                 </div>

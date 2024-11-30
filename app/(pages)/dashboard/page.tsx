@@ -5,12 +5,12 @@ import OverviewCard from '../../components/OverviewCard'
 import TransactionTable from '../../components/TransactionTable'
 import TodoTable from '../../components/TodoTable'
 import Header from '../../components/Header'
+import ThemeToggle from '../../components/ThemeToggle'
 
 const page = () => {
     return (
         <div className="min-h-screen mx-5">
             <div className="w-full">
-
                 <Header page="dashboard"/>
 
                 <div className="grid md:grid-cols-4 gap-6 mt-8">
@@ -22,7 +22,7 @@ const page = () => {
 
                 <div className="mt-8">
                     <div className="flex justify-between items-center mb-4">
-                        <h2 className="text-xl font-semibold text-gray-800">Today Transactions</h2>
+                        <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Today Transactions</h2>
                     </div>
 
                     <TransactionTable show_btn={false}/>
@@ -30,11 +30,13 @@ const page = () => {
 
                 <div className='mt-8'>
                     <div className="flex justify-between items-center mb-4">
-                        <h2 className="text-xl font-semibold text-gray-800">Thinks To Do</h2>
+                        <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Thinks To Do</h2>
                     </div>
                     <TodoTable/>
                 </div>
             </div>
+
+            <ThemeToggle />
         </div>
     )
 }

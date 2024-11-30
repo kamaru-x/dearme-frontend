@@ -82,10 +82,10 @@ Tomorrow brings new opportunities, and I'm excited to embrace whatever comes my 
                     // New Entry Form
                     <div className="mt-8">
                         <form onSubmit={handleSubmit} className="w-full mx-auto">
-                            <div className="bg-white rounded-xl shadow-md p-6">
+                            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
                                 {/* Title Input */}
                                 <div className="mb-6">
-                                    <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
+                                    <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                         Title
                                     </label>
                                     <input
@@ -93,7 +93,7 @@ Tomorrow brings new opportunities, and I'm excited to embrace whatever comes my 
                                         id="title"
                                         value={journal.title}
                                         onChange={(e) => setJournal({ ...journal, title: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200 dark:placeholder-gray-400"
                                         placeholder="Give your journal entry a title..."
                                         required
                                     />
@@ -101,29 +101,29 @@ Tomorrow brings new opportunities, and I'm excited to embrace whatever comes my 
 
                                 {/* Mood Selection */}
                                 <div className="mb-6">
-                                    <label htmlFor="mood" className="block text-sm font-medium text-gray-700 mb-2">
+                                    <label htmlFor="mood" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                         How are you feeling today?
                                     </label>
                                     <select
                                         id="mood"
                                         value={journal.mood}
                                         onChange={(e) => setJournal({ ...journal, mood: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200"
                                     >
-                                        <option value="happy">Happy 😊</option>
-                                        <option value="excited">Excited 🎉</option>
-                                        <option value="calm">Calm 😌</option>
-                                        <option value="neutral">Neutral 😐</option>
-                                        <option value="sad">Sad 😢</option>
-                                        <option value="anxious">Anxious 😰</option>
-                                        <option value="angry">Angry 😠</option>
-                                        <option value="grateful">Grateful 🙏</option>
+                                        <option value="happy" className="dark:bg-gray-700">Happy 😊</option>
+                                        <option value="excited" className="dark:bg-gray-700">Excited 🎉</option>
+                                        <option value="calm" className="dark:bg-gray-700">Calm 😌</option>
+                                        <option value="neutral" className="dark:bg-gray-700">Neutral 😐</option>
+                                        <option value="sad" className="dark:bg-gray-700">Sad 😢</option>
+                                        <option value="anxious" className="dark:bg-gray-700">Anxious 😰</option>
+                                        <option value="angry" className="dark:bg-gray-700">Angry 😠</option>
+                                        <option value="grateful" className="dark:bg-gray-700">Grateful 🙏</option>
                                     </select>
                                 </div>
 
                                 {/* Content Textarea */}
                                 <div className="mb-6">
-                                    <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-2">
+                                    <label htmlFor="content" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                         Your Thoughts
                                     </label>
                                     <textarea
@@ -131,7 +131,7 @@ Tomorrow brings new opportunities, and I'm excited to embrace whatever comes my 
                                         value={journal.content}
                                         onChange={(e) => setJournal({ ...journal, content: e.target.value })}
                                         rows={12}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200 resize-none"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200 resize-none dark:placeholder-gray-400"
                                         placeholder="Write your thoughts here..."
                                         required
                                     />
@@ -142,13 +142,13 @@ Tomorrow brings new opportunities, and I'm excited to embrace whatever comes my 
                                     <button
                                         type="button"
                                         onClick={() => router.push('/journal')}
-                                        className="px-6 py-2 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                                        className="px-6 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
                                     >
                                         Cancel
                                     </button>
                                     <button
                                         type="submit"
-                                        className="px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                        className="px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
                                     >
                                         Save Journal
                                     </button>
@@ -159,27 +159,27 @@ Tomorrow brings new opportunities, and I'm excited to embrace whatever comes my 
                 ) : (
                     // Journal View
                     <div className="mt-8 w-fullmx-auto">
-                        <article className="bg-white rounded-xl shadow-md overflow-hidden">
+                        <article className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
                             {/* Header Section */}
-                            <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50">
+                            <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-800">
                                 <div className="flex items-center justify-between mb-4">
-                                    <time className="text-sm text-gray-600" dateTime={journal.date}>
+                                    <time className="text-sm text-gray-600 dark:text-gray-400" dateTime={journal.date}>
                                         {formatDate(journal.date)}
                                     </time>
                                     <div className="text-2xl" title={`Feeling ${journal.mood}`}>
                                         {getMoodEmoji(journal.mood)}
                                     </div>
                                 </div>
-                                <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                                <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-200 mb-2">
                                     {journal.title}
                                 </h1>
                             </div>
 
                             {/* Content Section */}
                             <div className="p-6">
-                                <div className="prose prose-blue max-w-none">
+                                <div className="prose prose-blue max-w-none dark:text-gray-400">
                                     {journal.content.split('\n\n').map((paragraph, index) => (
-                                        <p key={index} className="mb-4 text-gray-700 leading-relaxed">
+                                        <p key={index} className="mb-4 text-gray-700 dark:text-gray-300 leading-relaxed">
                                             {paragraph}
                                         </p>
                                     ))}

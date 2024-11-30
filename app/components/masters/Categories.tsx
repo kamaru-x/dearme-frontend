@@ -83,17 +83,17 @@ const Categories = ({ api, showDeleteModal }: Props) => {
 
     return (
         <>
-            <div className="mb-6 p-4 bg-white rounded-lg shadow-md">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">Create New Category</h3>
+            <div className="mb-6 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Create New Category</h3>
                 <form onSubmit={createCategory} className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <select name="type" id="type" value={categoryData.type} onChange={handleChange} className="form-select">
-                            <option value="">Select Type</option>
-                            <option value="credit">Credit</option>
-                            <option value="debit">Debit</option>
+                        <select name="type" id="type" value={categoryData.type} onChange={handleChange} className="form-select dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200">
+                            <option value="" className="dark:bg-gray-700">Select Type</option>
+                            <option value="credit" className="dark:bg-gray-700">Credit</option>
+                            <option value="debit" className="dark:bg-gray-700">Debit</option>
                         </select>
-                        <input type="text" id="name" name="name" value={categoryData.name} onChange={handleChange} placeholder="Category Name" className="form-input w-full"/>
-                        <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                        <input type="text" id="name" name="name" value={categoryData.name} onChange={handleChange} placeholder="Category Name" className="form-input w-full dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:placeholder-gray-400"/>
+                        <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
                             Create Category
                         </button>
                     </div>
@@ -105,20 +105,20 @@ const Categories = ({ api, showDeleteModal }: Props) => {
                     <table className="w-full min-w-[640px]">
                         <tbody className="space-y-3 mb-5">
                             {categories.map((category: Category, index: number) => (
-                                <tr key={index} className="flex justify-between items-center p-4 hover:bg-gray-50 transition-colors duration-150 ease-in-out rounded-lg border border-gray-100 bg-white shadow-md hover:shadow-lg mb-3">
-                                    <td className="min-w-24 text-center text-sm text-gray-900 whitespace-nowrap">
+                                <tr key={index} className="flex justify-between items-center p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-150 ease-in-out rounded-lg border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-md hover:shadow-lg mb-3">
+                                    <td className="min-w-24 text-center text-sm text-gray-900 dark:text-gray-200 whitespace-nowrap">
                                         {index + 1}
                                     </td>
-                                    <td className="min-w-48 text-center text-sm text-gray-900 whitespace-nowrap">
+                                    <td className="min-w-48 text-center text-sm text-gray-900 dark:text-gray-200 whitespace-nowrap">
                                         {category.type}
                                     </td>
-                                    <td className="min-w-48 text-center text-sm text-gray-600 whitespace-nowrap">
+                                    <td className="min-w-48 text-center text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
                                         {category.name}
                                     </td>
                                     <td className="min-w-24 text-right flex items-center space-x-2 whitespace-nowrap">
                                         <button 
                                             onClick={() => handleDeleteClick('category', category.id, () => deleteCategory(category.id))}
-                                            className="p-1 text-red-600 hover:text-red-800 transition-colors duration-150"
+                                            className="p-1 text-red-600 hover:text-red-800 dark:text-red-500 dark:hover:text-red-400 transition-colors duration-150"
                                             title="Delete category"
                                         >
                                             <i className="fas fa-trash-alt w-5 h-5"></i>
@@ -130,8 +130,8 @@ const Categories = ({ api, showDeleteModal }: Props) => {
                     </table>
                 </div>
             ) : (
-                <div className="flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow-md">
-                    <p className="text-gray-600 text-lg">No categories available</p>
+                <div className="flex flex-col items-center justify-center p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+                    <p className="text-gray-600 dark:text-gray-400 text-lg">No categories available</p>
                 </div>
             )}
         </>

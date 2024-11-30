@@ -22,7 +22,7 @@ const page = () => {
 
                 <div className="mt-8">
                     <div className="flex justify-between items-center mb-4">
-                        <h2 className="text-xl font-semibold text-gray-800">{create ? 'Create Todo' : 'Thinks to do'}</h2>
+                        <h2 className="text-xl font-semibold text-gray-800 dark:text-white">{create ? 'Create Todo' : 'Thinks to do'}</h2>
                         {!create && (
                             <button className="btn-primary" onClick={() => setCreate(true)}>
                                 Create Todo

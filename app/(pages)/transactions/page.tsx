@@ -5,10 +5,7 @@ import TransactionTable from '@/app/components/TransactionTable'
 import CreateTransaction from '@/app/components/CreateTransaction'
 import Header from '@/app/components/Header'
 import OverviewCard from '@/app/components/OverviewCard'
-import { useApi } from '@/app/context/ApiContext'
-import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { useDeleteModal } from '@/app/context/DeleteModalContext'
 
 interface Transaction{
     id: number,
@@ -36,7 +33,7 @@ const TransactionsPage = () => {
                 
                 <div className="mt-8">
                     <div className="flex justify-between items-center mb-4">
-                        <h2 className="text-xl font-semibold text-gray-800">{create ? 'Create Transaction' : 'All Transactions'}</h2>
+                        <h2 className="text-xl font-semibold text-gray-800 dark:text-white">{create ? 'Create Transaction' : 'All Transactions'}</h2>
                         {!create && (
                             <button className="btn-primary" onClick={() => setCreate(true)}>
                                 Create Transaction

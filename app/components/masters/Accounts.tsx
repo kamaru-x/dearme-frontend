@@ -85,14 +85,14 @@ const Accounts = ({ api, showDeleteModal }: Props) => {
 
     return (
         <>
-            <div className="mb-6 p-4 bg-white rounded-lg shadow-md">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">Create New Account</h3>
+            <div className="mb-6 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Create New Account</h3>
                 <form onSubmit={createAccount} className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                        <input type="text" id="name" name="name" value={accountData.name} onChange={handleChange} placeholder="Account Name" className="form-input w-full"/>
-                        <input type="text" id="bank" name="bank" value={accountData.bank} onChange={handleChange} placeholder="Bank Name" className="form-input w-full"/>
-                        <input type="text" id="number" name="number" value={accountData.number} onChange={handleChange} placeholder="Account Number" className="form-input w-full"/>
-                        <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                        <input type="text" id="name" name="name" value={accountData.name} onChange={handleChange} placeholder="Account Name" className="form-input w-full dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:placeholder-gray-400"/>
+                        <input type="text" id="bank" name="bank" value={accountData.bank} onChange={handleChange} placeholder="Bank Name" className="form-input w-full dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:placeholder-gray-400"/>
+                        <input type="text" id="number" name="number" value={accountData.number} onChange={handleChange} placeholder="Account Number" className="form-input w-full dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:placeholder-gray-400"/>
+                        <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
                             Create Account
                         </button>
                     </div>
@@ -105,23 +105,23 @@ const Accounts = ({ api, showDeleteModal }: Props) => {
                     <table className="w-full min-w-[640px]">
                         <tbody className="space-y-3 mb-5">
                             {accounts.map((account: Account, index: number) => (
-                                <tr key={index} className="flex justify-between items-center p-4 hover:bg-gray-50 transition-colors duration-150 ease-in-out rounded-lg border border-gray-100 bg-white shadow-md hover:shadow-lg mb-3">
-                                    <td className="min-w-24 text-center text-sm text-gray-900 whitespace-nowrap">
+                                <tr key={index} className="flex justify-between items-center p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-150 ease-in-out rounded-lg border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-md hover:shadow-lg mb-3">
+                                    <td className="min-w-24 text-center text-sm text-gray-900 dark:text-gray-200 whitespace-nowrap">
                                         {index + 1}
                                     </td>
-                                    <td className="min-w-48 text-center text-sm text-gray-900 whitespace-nowrap">
+                                    <td className="min-w-48 text-center text-sm text-gray-900 dark:text-gray-200 whitespace-nowrap">
                                         {account.name}
                                     </td>
-                                    <td className="min-w-48 text-center text-sm text-gray-600 whitespace-nowrap">
+                                    <td className="min-w-48 text-center text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
                                         {account.bank}
                                     </td>
-                                    <td className="min-w-48 text-center text-sm text-gray-600 whitespace-nowrap">
+                                    <td className="min-w-48 text-center text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
                                         {account.number}
                                     </td>
                                     <td className="min-w-24 text-right flex items-center space-x-2 whitespace-nowrap">
                                         <button 
                                             onClick={() => handleDeleteClick('account', account.id, () => deleteAccount(account.id))}
-                                            className="p-1 text-red-600 hover:text-red-800 transition-colors duration-150"
+                                            className="p-1 text-red-600 hover:text-red-800 dark:text-red-500 dark:hover:text-red-400 transition-colors duration-150"
                                             title="Delete account"
                                         >
                                             <i className="fas fa-trash-alt w-5 h-5"></i>
@@ -135,8 +135,8 @@ const Accounts = ({ api, showDeleteModal }: Props) => {
 
             ) : (
 
-                <div className="flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow-md">
-                    <p className="text-gray-600 text-lg">No bank accounts available</p>
+                <div className="flex flex-col items-center justify-center p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+                    <p className="text-gray-600 dark:text-gray-400 text-lg">No bank accounts available</p>
                 </div>
 
             )}
