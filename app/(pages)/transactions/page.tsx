@@ -1,10 +1,24 @@
 'use client'
 
 import React, { useState } from 'react'
-import TransactionTable from '../../components/TransactionTable'
-import CreateTransaction from '../../components/CreateTransaction'
+import TransactionTable from '@/app/components/TransactionTable'
+import CreateTransaction from '@/app/components/CreateTransaction'
 import Header from '@/app/components/Header'
 import OverviewCard from '@/app/components/OverviewCard'
+import { useApi } from '@/app/context/ApiContext'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import { useDeleteModal } from '@/app/context/DeleteModalContext'
+
+interface Transaction{
+    id: number,
+    date: string,
+    title: string,
+    type: string,
+    account_name: string,
+    category_name: string,
+    amount: number
+}
 
 const TransactionsPage = () => {
     const [create, setCreate] = useState(false)
