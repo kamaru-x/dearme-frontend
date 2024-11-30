@@ -3,6 +3,8 @@
 import React, { useState, useEffect, FormEvent } from 'react'
 import Header from '@/app/components/Header'
 import { useApi } from '@/app/context/ApiContext'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 interface Account {
     id: number;
@@ -59,9 +61,11 @@ const Page = () => {
             const response = await api.fetch(api.endpoints.listAccounts);
             const result = await response.json();
             setAccounts(result.data || []);
+            // toast.success(result.message)
         } catch (error) {
             console.error('Error fetching accounts data:', error);
             setAccounts([]);
+            toast.error('Failed to fetch accounts')
         }
     };
 
@@ -69,25 +73,35 @@ const Page = () => {
         e.preventDefault()
         try {
             const response = await api.fetch(api.endpoints.listAccounts, {method: 'POST', body: JSON.stringify(accountData)})
+            const result = await response.json()
 
             if (response.ok) {
                 setAccountData({name: '', bank: '', number: ''})
                 fetchAccounts()
+                toast.success(result.message)
+            } else {
+                toast.error(result.message)
             }
         } catch (error) {
             console.log('Error creating account:', error)
+            toast.error('Failed to create account')
         }
     }
 
     const deleteAccount = async (id: number) => {
         try {
             const response = await api.fetch(api.endpoints.accountDetail(id), {method: 'DELETE'})
+            const result = await response.json()
 
             if (response.ok) {
                 fetchAccounts()
+                toast.success(result.message)
+            } else {
+                toast.error(result.message)
             }
         } catch (error) {
             console.log('Error deleting account:', error)
+            toast.error('Failed to delete account')
         }
     }
 
@@ -96,9 +110,11 @@ const Page = () => {
             const response = await api.fetch(api.endpoints.listCategories);
             const result = await response.json();
             setCategories(result.data || []);
+            // toast.success(result.message)
         } catch (error) {
             console.log('Error fetching categories:', error)
             setCategories([])
+            toast.error('Failed to fetch categories')
         }
     }
 
@@ -106,23 +122,35 @@ const Page = () => {
         e.preventDefault()
         try {
             const response = await api.fetch(api.endpoints.listCategories, {method: 'POST', body: JSON.stringify(categoryData)})
+            const result = await response.json()
+
             if (response.ok) {
                 setCategoryData({type: '', name: ''})
                 fetchCategories();
+                toast.success(result.message)
+            } else {
+                toast.error(result.message)
             }
         } catch (error) {
             console.log('Error creating category:', error)
+            toast.error('Failed to create category')
         }
     }
 
     const deleteCategory = async (id: number) => {
         try {
             const response = await api.fetch(api.endpoints.categoryDetail(id), {method: 'DELETE'})
+            const result = await response.json()
+
             if (response.ok) {
                 fetchCategories()
+                toast.success(result.message)
+            } else {
+                toast.error(result.message)
             }
         } catch (error) {
             console.log('Error deleting category:', error)
+            toast.error('Failed to delete category')
         }
     }
 
@@ -131,9 +159,11 @@ const Page = () => {
             const response = await api.fetch(api.endpoints.listTasks);
             const result = await response.json();
             setTasks(result.data || []);
+            // toast.success(result.message)
         } catch (error) {
             console.log('Error fetching tasks:', error)
             setTasks([])
+            toast.error('Failed to fetch tasks')
         }
     }
 
@@ -141,23 +171,35 @@ const Page = () => {
         e.preventDefault()
         try {
             const response = await api.fetch(api.endpoints.listTasks, {method: 'POST', body: JSON.stringify(taskData)})
+            const result = await response.json()
+
             if (response.ok) {
                 setTaskData({title: ''})
                 fetchTasks();
+                toast.success(result.message)
+            } else {
+                toast.error(result.message)
             }
         } catch (error) {
             console.log('Error creating task:', error)
+            toast.error('Failed to create task')
         }
     }
 
     const deleteTask = async (id: number) => {
         try {
             const response = await api.fetch(api.endpoints.taskDetail(id), {method: 'DELETE'})
+            const result = await response.json()
+
             if (response.ok) {
                 fetchTasks()
+                toast.success(result.message)
+            } else {
+                toast.error(result.message)
             }
         } catch (error) {
             console.log('Error deleting task:', error)
+            toast.error('Failed to delete task')
         }
     }
 
@@ -171,6 +213,7 @@ const Page = () => {
 
     return (
         <div className="min-h-screen mx-5">
+            <ToastContainer position="top-right" autoClose={3000} />
             <div className="w-full">
                 <Header page="masters"/>
 
@@ -209,7 +252,7 @@ const Page = () => {
                             </div>
 
                             {/* Accounts Table */}
-                            {accounts ? (
+                            {accounts && accounts.length > 0 ? (
 
                                 <div className="overflow-x-auto pb-2">
                                     <table className="w-full min-w-[640px]">
