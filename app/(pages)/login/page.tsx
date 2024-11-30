@@ -13,7 +13,7 @@ export default function Login() {
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
         setError('')
-    
+
         try {
             const response = await fetch(api.baseUrl + api.endpoints.login, {
             method: 'POST',
@@ -27,10 +27,15 @@ export default function Login() {
 
         const data = await response.json()
 
-        document.cookie = `token=${data.token}; path=/`
+        // Store both access and refresh tokens
+        const oneDay = 24 * 60 * 60 * 1000;
+        const oneMonth = 30 * oneDay;
+        
+        document.cookie = `token=${data.access}; path=/; max-age=${oneDay}`;
+        document.cookie = `refresh_token=${data.refresh}; path=/; max-age=${oneMonth}`;
 
         router.push('/')
-        
+
         router.refresh()
     } catch (err) {
         setError('Invalid username or password')

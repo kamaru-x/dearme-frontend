@@ -12,30 +12,42 @@ interface Account {
     number: string;
 }
 
-const page = () => {
+const Page = () => {
     const api = useApi()
     const [accounts, setAccounts] = useState<Account[]>([])
     const [categories, setCategories] = useState([])
     const [checklist, setChecklist] = useState([])
-    
+
     const [formData, setFormData] = useState({name: '', bank: '', number: ''})
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
-        
+
         setFormData({
             ...formData,[name]: value
         })
     }
+
+    const fetchAccounts = async () => {
+        try {
+            const response = await fetch(api.baseUrl + api.endpoints.listAccounts, {
+                method: 'GET',
+                headers: api.getHeaders()
+            });
+            const result = await response.json();
+            setAccounts(result.data || []);
+        } catch (error) {
+            console.error('Error fetching accounts data:', error);
+            setAccounts([]);
+        }
+    };
 
     const createAccount = async (e: React.FormEvent) => {
         e.preventDefault()
         try {
             const response = await fetch(api.baseUrl + api.endpoints.listAccounts, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: api.getHeaders(),
                 body: JSON.stringify(formData)
             })
 
@@ -52,9 +64,7 @@ const page = () => {
         try {
             const response = await fetch(`${api.baseUrl}${api.endpoints.accountDetail(id)}`, {
                 method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+                headers: api.getHeaders()
             })
 
             if (response.ok) {
@@ -65,17 +75,6 @@ const page = () => {
         }
     }
 
-    const fetchAccounts = async () => {
-        try {
-            const response = await fetch(api.baseUrl + api.endpoints.listAccounts, {method: 'GET'});
-            const result = await response.json();
-            setAccounts(result.data || []);
-        } catch (error) {
-            console.error('Error fetching accounts data:', error);
-            setAccounts([]);
-        }
-    };
-    
     React.useEffect(() => {
         fetchAccounts();
     }, [api]);
@@ -89,15 +88,15 @@ const page = () => {
 
                 {/* Tabs */}
                 <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mt-8">
-                    <button onClick={() => setActiveTab('ACCOUNTS')} className={`tab-button w-full py-2 rounded-lg shadow-md focus:outline-none transition-colors duration-200 
+                    <button onClick={() => setActiveTab('ACCOUNTS')} className={`tab-button w-full py-2 rounded-lg shadow-md focus:outline-none transition-colors duration-200
                         ${ activeTab === 'ACCOUNTS' ? 'bg-gradient-to-r from-blue-400 to-blue-500 text-white': 'text-gray-600 bg-white'}`}> BANK ACCOUNTS
                     </button>
 
-                    <button onClick={() => setActiveTab('CATEGORIES')} className={`tab-button w-full py-2 rounded-lg shadow-md focus:outline-none transition-colors duration-200 
+                    <button onClick={() => setActiveTab('CATEGORIES')} className={`tab-button w-full py-2 rounded-lg shadow-md focus:outline-none transition-colors duration-200
                         ${ activeTab === 'CATEGORIES' ? 'bg-gradient-to-r from-blue-400 to-blue-500 text-white' : 'text-gray-600 bg-white'}`}>TRANSACTION CATEGORIES
                     </button>
 
-                    <button onClick={() => setActiveTab('CHECKLIST')} className={`tab-button w-full py-2 rounded-lg shadow-md focus:outline-none transition-colors duration-200 
+                    <button onClick={() => setActiveTab('CHECKLIST')} className={`tab-button w-full py-2 rounded-lg shadow-md focus:outline-none transition-colors duration-200
                         ${ activeTab === 'CHECKLIST' ? 'bg-gradient-to-r from-blue-400 to-blue-500 text-white' : 'text-gray-600 bg-white' }`}>CHECKLIST ITEMS
                     </button>
                 </div>
@@ -129,7 +128,7 @@ const page = () => {
                                         <tbody className="space-y-3 mb-5">
                                             {accounts.map((account: Account, index: number) => (
                                                 <tr key={index} className="flex justify-between items-center p-4 hover:bg-gray-50 transition-colors duration-150 ease-in-out rounded-lg border border-gray-100 bg-white shadow-md hover:shadow-lg mb-3">
-                                                    <td className="min-w-24 text-left text-sm text-gray-900 whitespace-nowrap text-center">
+                                                    <td className="min-w-24 text-center text-sm text-gray-900 whitespace-nowrap">
                                                         {index + 1}
                                                     </td>
                                                     <td className="min-w-48 text-center text-sm text-gray-900 whitespace-nowrap">
@@ -142,9 +141,9 @@ const page = () => {
                                                         {account.number}
                                                     </td>
                                                     <td className="min-w-24 text-right flex items-center space-x-2 whitespace-nowrap">
-                                                        <button 
+                                                        <button
                                                             onClick={() => deleteAccount(account.id)}
-                                                            className="p-1 text-red-600 hover:text-red-800 transition-colors duration-150" 
+                                                            className="p-1 text-red-600 hover:text-red-800 transition-colors duration-150"
                                                             title="Delete account"
                                                         >
                                                             <i className="fas fa-trash-alt w-5 h-5"></i>
@@ -183,4 +182,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page
