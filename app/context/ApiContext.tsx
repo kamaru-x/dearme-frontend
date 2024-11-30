@@ -26,6 +26,7 @@ interface Api {
     baseUrl: string;
     endpoints: ApiEndpoints;
     getHeaders: (withAuth?: boolean) => HeadersInit;
+    fetch: (endpoint: string, options?: RequestInit & { withAuth?: boolean }) => Promise<Response>;
 }
 
 const api: Api = {
@@ -62,6 +63,16 @@ const api: Api = {
         }
 
         return headers;
+    },
+    fetch: async (endpoint: string, options: RequestInit & { withAuth?: boolean } = {}) => {
+        const { withAuth = true, headers, ...rest } = options;
+        return fetch(`${api.baseUrl}${endpoint}`, {
+            headers: {
+                ...api.getHeaders(withAuth),
+                ...headers
+            },
+            ...rest
+        });
     }
 }
 

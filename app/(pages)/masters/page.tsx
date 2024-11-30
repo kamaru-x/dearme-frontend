@@ -30,10 +30,7 @@ const Page = () => {
 
     const fetchAccounts = async () => {
         try {
-            const response = await fetch(api.baseUrl + api.endpoints.listAccounts, {
-                method: 'GET',
-                headers: api.getHeaders()
-            });
+            const response = await api.fetch(api.endpoints.listAccounts);
             const result = await response.json();
             setAccounts(result.data || []);
         } catch (error) {
@@ -45,9 +42,8 @@ const Page = () => {
     const createAccount = async (e: React.FormEvent) => {
         e.preventDefault()
         try {
-            const response = await fetch(api.baseUrl + api.endpoints.listAccounts, {
+            const response = await api.fetch(api.endpoints.listAccounts, {
                 method: 'POST',
-                headers: api.getHeaders(),
                 body: JSON.stringify(formData)
             })
 
@@ -62,9 +58,8 @@ const Page = () => {
 
     const deleteAccount = async (id: number) => {
         try {
-            const response = await fetch(`${api.baseUrl}${api.endpoints.accountDetail(id)}`, {
-                method: 'DELETE',
-                headers: api.getHeaders()
+            const response = await api.fetch(api.endpoints.accountDetail(id), {
+                method: 'DELETE'
             })
 
             if (response.ok) {
