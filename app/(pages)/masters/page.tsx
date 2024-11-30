@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, FormEvent } from 'react'
 import Header from '@/app/components/Header'
 import { useApi } from '@/app/context/ApiContext'
 
@@ -12,20 +12,46 @@ interface Account {
     number: string;
 }
 
+interface Category {
+    id: number;
+    type: string;
+    name: string;
+}
+
+interface Task {
+    id: number;
+    title: string;
+}
+
 const Page = () => {
     const api = useApi()
     const [accounts, setAccounts] = useState<Account[]>([])
-    const [categories, setCategories] = useState([])
-    const [checklist, setChecklist] = useState([])
+    const [categories, setCategories] = useState<Category[]>([])
+    const [tasks, setTasks] = useState<Task[]>([])
 
-    const [formData, setFormData] = useState({name: '', bank: '', number: ''})
+    const [accountData, setAccountData] = useState({name: '', bank: '', number: ''})
+    const [categoryData, setCategoryData] = useState({type: '', name: ''})
+    const [taskData, setTaskData] = useState({title: ''})
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target
-
-        setFormData({
-            ...formData,[name]: value
-        })
+        
+        if (activeTab === 'ACCOUNTS') {
+            setAccountData({
+                ...accountData,
+                [name]: value
+            })
+        } else if (activeTab === 'CATEGORIES') {
+            setCategoryData({
+                ...categoryData,
+                [name]: value
+            })
+        } else if (activeTab === 'CHECKLIST') {
+            setTaskData({
+                ...taskData,
+                [name]: value
+            })
+        }
     }
 
     const fetchAccounts = async () => {
@@ -42,13 +68,10 @@ const Page = () => {
     const createAccount = async (e: React.FormEvent) => {
         e.preventDefault()
         try {
-            const response = await api.fetch(api.endpoints.listAccounts, {
-                method: 'POST',
-                body: JSON.stringify(formData)
-            })
+            const response = await api.fetch(api.endpoints.listAccounts, {method: 'POST', body: JSON.stringify(accountData)})
 
             if (response.ok) {
-                setFormData({name: '', bank: '', number: ''})
+                setAccountData({name: '', bank: '', number: ''})
                 fetchAccounts()
             }
         } catch (error) {
@@ -58,9 +81,7 @@ const Page = () => {
 
     const deleteAccount = async (id: number) => {
         try {
-            const response = await api.fetch(api.endpoints.accountDetail(id), {
-                method: 'DELETE'
-            })
+            const response = await api.fetch(api.endpoints.accountDetail(id), {method: 'DELETE'})
 
             if (response.ok) {
                 fetchAccounts()
@@ -70,8 +91,80 @@ const Page = () => {
         }
     }
 
+    const fetchCategories = async () => {
+        try {
+            const response = await api.fetch(api.endpoints.listCategories);
+            const result = await response.json();
+            setCategories(result.data || []);
+        } catch (error) {
+            console.log('Error fetching categories:', error)
+            setCategories([])
+        }
+    }
+
+    const createCategory = async (e: React.FormEvent) => {
+        e.preventDefault()
+        try {
+            const response = await api.fetch(api.endpoints.listCategories, {method: 'POST', body: JSON.stringify(categoryData)})
+            if (response.ok) {
+                setCategoryData({type: '', name: ''})
+                fetchCategories();
+            }
+        } catch (error) {
+            console.log('Error creating category:', error)
+        }
+    }
+
+    const deleteCategory = async (id: number) => {
+        try {
+            const response = await api.fetch(api.endpoints.categoryDetail(id), {method: 'DELETE'})
+            if (response.ok) {
+                fetchCategories()
+            }
+        } catch (error) {
+            console.log('Error deleting category:', error)
+        }
+    }
+
+    const fetchTasks = async () => {
+        try {
+            const response = await api.fetch(api.endpoints.listTasks);
+            const result = await response.json();
+            setTasks(result.data || []);
+        } catch (error) {
+            console.log('Error fetching tasks:', error)
+            setTasks([])
+        }
+    }
+
+    const createTask = async (e: React.FormEvent) => {
+        e.preventDefault()
+        try {
+            const response = await api.fetch(api.endpoints.listTasks, {method: 'POST', body: JSON.stringify(taskData)})
+            if (response.ok) {
+                setTaskData({title: ''})
+                fetchTasks();
+            }
+        } catch (error) {
+            console.log('Error creating task:', error)
+        }
+    }
+
+    const deleteTask = async (id: number) => {
+        try {
+            const response = await api.fetch(api.endpoints.taskDetail(id), {method: 'DELETE'})
+            if (response.ok) {
+                fetchTasks()
+            }
+        } catch (error) {
+            console.log('Error deleting task:', error)
+        }
+    }
+
     React.useEffect(() => {
         fetchAccounts();
+        fetchCategories();
+        fetchTasks();
     }, [api]);
 
     const [activeTab, setActiveTab] = useState('ACCOUNTS');
@@ -105,9 +198,9 @@ const Page = () => {
                                 <h3 className="text-lg font-semibold text-gray-800 mb-4">Create New Account</h3>
                                 <form onSubmit={createAccount} className="space-y-4">
                                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                                        <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} placeholder="Account Name" className="form-input w-full"/>
-                                        <input type="text" id="bank" name="bank" value={formData.bank} onChange={handleChange} placeholder="Bank Name" className="form-input w-full"/>
-                                        <input type="text" id="number" name="number" value={formData.number} onChange={handleChange} placeholder="Account Number" className="form-input w-full"/>
+                                        <input type="text" id="name" name="name" value={accountData.name} onChange={handleChange} placeholder="Account Name" className="form-input w-full"/>
+                                        <input type="text" id="bank" name="bank" value={accountData.bank} onChange={handleChange} placeholder="Bank Name" className="form-input w-full"/>
+                                        <input type="text" id="number" name="number" value={accountData.number} onChange={handleChange} placeholder="Account Number" className="form-input w-full"/>
                                         <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                                             Create Account
                                         </button>
@@ -136,11 +229,7 @@ const Page = () => {
                                                         {account.number}
                                                     </td>
                                                     <td className="min-w-24 text-right flex items-center space-x-2 whitespace-nowrap">
-                                                        <button
-                                                            onClick={() => deleteAccount(account.id)}
-                                                            className="p-1 text-red-600 hover:text-red-800 transition-colors duration-150"
-                                                            title="Delete account"
-                                                        >
+                                                        <button onClick={() => deleteAccount(account.id)} className="p-1 text-red-600 hover:text-red-800 transition-colors duration-150" title="Delete account">
                                                             <i className="fas fa-trash-alt w-5 h-5"></i>
                                                         </button>
                                                     </td>
@@ -160,15 +249,99 @@ const Page = () => {
                         </>
                     ) : activeTab === 'CATEGORIES' ? (
 
-                        <div className="flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow-md">
-                            <p className="text-gray-600 text-lg">No categories available</p>
-                        </div>
+                        <>
+                            <div className="mb-6 p-4 bg-white rounded-lg shadow-md">
+                                <h3 className="text-lg font-semibold text-gray-800 mb-4">Create New Category</h3>
+                                <form onSubmit={createCategory} className="space-y-4">
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <select name="type" id="type" value={categoryData.type} onChange={handleChange} className="form-select">
+                                            <option value="">Select Type</option>
+                                            <option value="credit">Credit</option>
+                                            <option value="debit">Debit</option>
+                                        </select>
+                                        <input type="text" id="name" name="name" value={categoryData.name} onChange={handleChange} placeholder="Category Name" className="form-input w-full"/>
+                                        <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                                            Create Category
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            {categories && categories.length > 0 ? (
+                                <div className="overflow-x-auto pb-2">
+                                    <table className="w-full min-w-[640px]">
+                                        <tbody className="space-y-3 mb-5">
+                                            {categories.map((category: Category, index: number) => (
+                                                <tr key={index} className="flex justify-between items-center p-4 hover:bg-gray-50 transition-colors duration-150 ease-in-out rounded-lg border border-gray-100 bg-white shadow-md hover:shadow-lg mb-3">
+                                                    <td className="min-w-24 text-center text-sm text-gray-900 whitespace-nowrap">
+                                                        {index + 1}
+                                                    </td>
+                                                    <td className="min-w-48 text-center text-sm text-gray-900 whitespace-nowrap">
+                                                        {category.type}
+                                                    </td>
+                                                    <td className="min-w-48 text-center text-sm text-gray-600 whitespace-nowrap">
+                                                        {category.name}
+                                                    </td>
+                                                    <td className="min-w-24 text-right flex items-center space-x-2 whitespace-nowrap">
+                                                        <button onClick={() => deleteCategory(category.id)} className="p-1 text-red-600 hover:text-red-800 transition-colors duration-150" title="Delete category">
+                                                            <i className="fas fa-trash-alt w-5 h-5"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            ) : (
+                                <div className="flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow-md">
+                                    <p className="text-gray-600 text-lg">No categories available</p>
+                                </div>
+                            )}
+                        </>
 
                     ) : activeTab === 'CHECKLIST' ? (
 
-                        <div className="flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow-md">
-                            <p className="text-gray-600 text-lg">No checklist available</p>
-                        </div>
+                        <>
+                            <div className="mb-6 p-4 bg-white rounded-lg shadow-md">
+                                <h3 className="text-lg font-semibold text-gray-800 mb-4">Create New Task</h3>
+                                <form className="space-y-4" onSubmit={createTask}>
+                                    <div className="grid grid-cols-12 gap-4">
+                                        <input type="text" id="title" name="title" value={taskData.title} onChange={handleChange} placeholder="Task Title" className="form-input col-span-12 md:col-span-9 w-full"/>
+                                        <button type="submit" className="col-span-12 md:col-span-3 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                                            Create Task
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            { tasks && tasks.length > 0 ? (
+                                <div className="overflow-x-auto pb-2">
+                                    <table className="w-full min-w-[640px]">
+                                        <tbody className="space-y-3 mb-5">
+                                            {tasks.map((task: Task, index: number) => (
+                                                <tr key={index} className="flex justify-between items-center p-4 hover:bg-gray-50 transition-colors duration-150 ease-in-out rounded-lg border border-gray-100 bg-white shadow-md hover:shadow-lg mb-3">
+                                                    <td className="min-w-24 text-center text-sm text-gray-900 whitespace-nowrap">
+                                                        {index + 1}
+                                                    </td>
+                                                    <td className="min-w-48 text-center text-sm text-gray-900 whitespace-nowrap">
+                                                        {task.title}
+                                                    </td>
+                                                    <td className="min-w-24 text-right flex items-center space-x-2 whitespace-nowrap">
+                                                        <button onClick={() => deleteTask(task.id)} className="p-1 text-red-600 hover:text-red-800 transition-colors duration-150" title="Delete category">
+                                                            <i className="fas fa-trash-alt w-5 h-5"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            ) : (
+                                <div className="flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow-md">
+                                    <p className="text-gray-600 text-lg">No checklist available</p>
+                                </div>
+                            )}
+                        </>
 
                     ) : null}
                 </div>
