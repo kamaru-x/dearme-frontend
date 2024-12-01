@@ -2,12 +2,26 @@
 
 import React from 'react'
 import OverviewCard from '../../components/OverviewCard'
-import TransactionTable from '../../components/TransactionTable'
+import TransactionTable from '../../components/transactions/TransactionTable'
 import TodoTable from '../../components/TodoTable'
 import Header from '../../components/Header'
 import ThemeToggle from '../../components/ThemeToggle'
 
+interface Transaction{
+    id: number,
+    date: string,
+    title: string,
+    type: 'credit' | 'debit',
+    account: number,
+    account_name: string,
+    category: number,
+    category_name: string,
+    amount: number
+}
+
 const page = () => {
+    const transactions: Transaction[] = []
+
     return (
         <div className="min-h-screen mx-5">
             <div className="w-full">
@@ -20,15 +34,19 @@ const page = () => {
                     <OverviewCard color="bg-gradient-to-r from-blue-400 to-blue-500" icon="fas fa-list-ol" title="Completed Tasks" value="0 / 10"/>
                 </div>
 
-                <div className="mt-8">
-                    <div className="flex justify-between items-center mb-4">
-                        <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Today Transactions</h2>
+                {transactions && transactions.length > 0 ? (
+                    <div className="mt-8">
+                        <div className="flex justify-between items-center mb-4">
+                            <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Today Transactions</h2>
+                        </div>
+
+                        <TransactionTable show_btn={false} transactions={[]}/>
                     </div>
+                ) : (
+                    <></>
+                )}
 
-                    <TransactionTable show_btn={false}/>
-                </div>
-
-                <div className='mt-8'>
+                <div className='mt-8 pb-8'>
                     <div className="flex justify-between items-center mb-4">
                         <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Thinks To Do</h2>
                     </div>

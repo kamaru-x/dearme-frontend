@@ -52,7 +52,7 @@ const CreateTodo = ({ setCreate }: CreateTodoProps) => {
                 </div>
 
                 <div className="flex justify-center md:justify-end space-x-3 mt-5">
-                    <button type="button" className="btn-secondary dark:bg-gray-600 dark:hover:bg-gray-700" onClick={() => setCreate(false)}>
+                    <button type="button" className="btn-red dark:bg-gray-600 dark:hover:bg-gray-700" onClick={() => setCreate(false)}>
                         Cancel
                     </button>
                     <button type="submit" className="btn-primary dark:bg-blue-600 dark:hover:bg-blue-700">

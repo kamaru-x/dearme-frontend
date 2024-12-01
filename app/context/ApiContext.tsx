@@ -40,7 +40,7 @@ const api: Api = {
         listCategories: '/categories/',
         categoryDetail: (id: number) => `/categories/${id}/`,
         listTransactions: '/transactions/',
-        transactionDetail: (id: number) => `/transactions/${id}/`,
+        transactionDetail: (id: number) => `/transaction/${id}/`,
         listTasks: '/tasks/',
         taskDetail: (id: number) => `/tasks/${id}/`,
         listTodos: '/todos/',
