@@ -21,32 +21,41 @@ interface TransactionTableProps {
     transactions: Transaction[];
     api: any;
     onUpdate: () => void;
+    onEdit: (transaction: Transaction) => void;
 }
 
-const TransactionTable = ({ show_btn, transactions, api, onUpdate }: TransactionTableProps) => {
+const TransactionTable = ({ show_btn, transactions, api, onUpdate, onEdit }: TransactionTableProps) => {
     const { showDeleteModal } = useDeleteModal()
 
     const deleteTransaction = async (id: number) => {
         try {
             const response = await api.fetch(api.endpoints.transactionDetail(id), {
-                method: 'DELETE'
-            })
-            const result = await response.json()
-    
-            if (response.ok) {
-                toast.success(result.message)
-                onUpdate()
-            } else {
-                toast.error(result.message)
+                method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to delete transaction');
             }
+
+            const result = await response.json();
+            toast.success(result.message || 'Transaction deleted successfully');
+            onUpdate();
         } catch (error) {
-            console.log('Error deleting transaction:', error)
-            toast.error('Failed to delete transaction')
+            console.error('Error deleting transaction:', error);
+            toast.error(error instanceof Error ? error.message : 'Failed to delete transaction');
         }
     }
 
     const handleDeleteClick = (itemType: string, id: number, deleteFunction: () => void) => {
         showDeleteModal(itemType, deleteFunction);
+    };
+
+    const onEditClick = (transaction: Transaction) => {
+        onEdit(transaction);
     };
 
     return (
@@ -84,7 +93,11 @@ const TransactionTable = ({ show_btn, transactions, api, onUpdate }: Transaction
                                     </td>
                                     {show_btn === true && (
                                         <td className="w-24 text-right flex items-center space-x-2 whitespace-nowrap">
-                                            <button className="p-1 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors duration-150" title="Edit transaction">
+                                            <button 
+                                                onClick={() => onEditClick(transaction)}
+                                                className="p-1 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors duration-150" 
+                                                title="Edit transaction"
+                                            >
                                                 <i className="fas fa-pen-to-square w-5 h-5"></i>
                                             </button>
                                             <button 

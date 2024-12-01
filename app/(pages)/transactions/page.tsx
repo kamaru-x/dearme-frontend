@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import TransactionTable from '@/app/components/transactions/TransactionTable'
-import CreateTransaction from '@/app/components/transactions/CreateTransaction'
+import Transaction from '@/app/components/transactions/Transaction'
 import Header from '@/app/components/Header'
 import OverviewCard from '@/app/components/OverviewCard'
 import { toast, ToastContainer } from 'react-toastify'
@@ -34,6 +34,7 @@ const TransactionsPage = () => {
     const [transactions, setTransactions] = useState<Transaction[]>([])
     const [overview, setOverview] = useState<TransactionOverview>({credited: 0, debited: 0, balance: 0})
     const [filters, setFilters] = useState<{fromDate: string, toDate: string, category: string}>({fromDate: '', toDate: '', category: ''})
+    const [editTransaction, setEditTransaction] = useState<Transaction | null>(null)
 
     const fetchTransactions = async () => {
         try {
@@ -68,6 +69,11 @@ const TransactionsPage = () => {
         setFilters(newFilters)
     }
 
+    const handleEdit = (transaction: Transaction) => {
+        setEditTransaction(transaction);
+        setCreate(true);
+    }
+
     return (
         <div className="min-h-screen mx-5">
             <ToastContainer position="top-right" autoClose={3000} />
@@ -83,15 +89,37 @@ const TransactionsPage = () => {
                 <div className="mt-8">
                     <TransactionFilters onFilterChange={handleFilterChange} />
                     <div className="flex justify-between items-center mb-4">
-                        <h2 className="text-xl font-semibold text-gray-800 dark:text-white">{create ? 'Create Transaction' : 'All Transactions'}</h2>
+                        <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+                            {create ? (editTransaction ? 'Edit Transaction' : 'Create Transaction') : 'All Transactions'}
+                        </h2>
                         {!create && (
-                            <button className="btn-primary" onClick={() => setCreate(true)}>
+                            <button 
+                                className="btn-primary" 
+                                onClick={() => {
+                                    setEditTransaction(null);
+                                    setCreate(true);
+                                }}
+                            >
                                 Create Transaction
                             </button>
                         )}
                     </div>
 
-                    {create ? <CreateTransaction setCreate={setCreate} fetchTransactions={fetchTransactions} /> : <TransactionTable show_btn={true} transactions={transactions} api={api} onUpdate={fetchTransactions}/>}
+                    {create ? (
+                        <Transaction 
+                            setCreate={setCreate} 
+                            fetchTransactions={fetchTransactions} 
+                            editData={editTransaction}
+                        />
+                    ) : (
+                        <TransactionTable 
+                            show_btn={true} 
+                            transactions={transactions} 
+                            api={api} 
+                            onUpdate={fetchTransactions}
+                            onEdit={handleEdit}
+                        />
+                    )}
                 </div>
             </div>
         </div>

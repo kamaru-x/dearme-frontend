@@ -52,6 +52,7 @@ const api: Api = {
     },
     getHeaders: (withAuth: boolean = true): HeadersInit => {
         const headers: HeadersInit = {
+            'Accept': 'application/json',
             'Content-Type': 'application/json'
         };
 
