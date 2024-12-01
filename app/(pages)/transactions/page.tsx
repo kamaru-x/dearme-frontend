@@ -61,10 +61,6 @@ const TransactionsPage = () => {
         }
     }
 
-    React.useEffect(() => {
-        fetchTransactions()
-    }, [api, filters])
-
     const handleFilterChange = (newFilters: typeof filters) => {
         setFilters(newFilters)
     }
@@ -73,6 +69,10 @@ const TransactionsPage = () => {
         setEditTransaction(transaction);
         setCreate(true);
     }
+
+    React.useEffect(() => {
+        fetchTransactions()
+    }, [api, filters])
 
     return (
         <div className="min-h-screen mx-5">

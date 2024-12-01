@@ -3,7 +3,7 @@
 import React from 'react'
 import OverviewCard from '../../components/OverviewCard'
 import TransactionTable from '../../components/transactions/TransactionTable'
-import TodoTable from '../../components/TodoTable'
+import TodoTable from '../../components/todo/TodoTable'
 import Header from '../../components/Header'
 import ThemeToggle from '../../components/ThemeToggle'
 
