@@ -54,12 +54,12 @@ const Page = () => {
 
     const getMonthDateRange = () => {
         const date = new Date();
-        const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-        const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-        return {
-            fromDate: firstDay.toISOString().split('T')[0],
-            toDate: lastDay.toISOString().split('T')[0]
-        };
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const fromDate = `${year}-${month.toString().padStart(2, '0')}-01`;
+        const lastDay = new Date(year, month, 0).getDate();
+        const toDate = `${year}-${month.toString().padStart(2, '0')}-${lastDay}`;
+        return { fromDate, toDate };
     };
 
     useEffect(() => {
@@ -73,20 +73,20 @@ const Page = () => {
                 const transResponse = await api.fetch(`${api.endpoints.listTransactions}?from_date=${today}&to_date=${today}`);
                 const transResult = await transResponse.json();
                 setTransactions(transResult.data || []);
-                
+
                 // Fetch this month's transactions for the overview
                 const monthTransResponse = await api.fetch(`${api.endpoints.listTransactions}?from_date=${fromDate}&to_date=${toDate}`);
                 const monthTransResult = await monthTransResponse.json();
-                
+
                 // Fetch todos
                 const todosResponse = await api.fetch(api.endpoints.listTodos);
                 const todosResult = await todosResponse.json();
                 const allTodos = todosResult.data || [];
-                
+
                 // Filter incomplete todos
                 const incompleteTodos = allTodos.filter((todo: Todo) => !todo.completed);
                 setTodos(incompleteTodos);
-                
+
                 // Set stats using this month's transactions
                 setStats({
                     credited: monthTransResult.credited || 0,

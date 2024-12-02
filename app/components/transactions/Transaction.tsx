@@ -43,6 +43,7 @@ const Transaction = ({ setCreate, fetchTransactions, editData }: TransactionProp
         title: '',
         type: '',
         category: '',
+        account: '',
         amount: 0,
         date: ''
     })
@@ -53,6 +54,7 @@ const Transaction = ({ setCreate, fetchTransactions, editData }: TransactionProp
                 title: editData.title,
                 type: editData.type,
                 category: editData.category.toString(),
+                account: editData.account?.toString() || '',
                 amount: editData.amount,
                 date: editData.date
             });
@@ -113,7 +115,7 @@ const Transaction = ({ setCreate, fetchTransactions, editData }: TransactionProp
                 ...transactionData,
                 amount: Number(transactionData.amount),
                 category: Number(transactionData.category),
-                account: accounts.length > 0 ? accounts[0].id : null
+                account: Number(transactionData.account)
             };
             
             const response = await api.fetch(url, {
@@ -130,7 +132,7 @@ const Transaction = ({ setCreate, fetchTransactions, editData }: TransactionProp
             }
             
             const result = await response.json();
-            setTransactionData({title: '', type: '', category: '', amount: 0, date: ''});
+            setTransactionData({title: '', type: '', category: '', account: '', amount: 0, date: ''});
             toast.success(result.message || 'Transaction saved successfully');
             setCreate(false);
             fetchTransactions();
@@ -202,6 +204,24 @@ const Transaction = ({ setCreate, fetchTransactions, editData }: TransactionProp
                             {categories.map((category) => (
                                 <option key={category.id} value={category.id} className="dark:bg-gray-700">
                                     {category.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div>
+                        <label htmlFor="account" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Account</label>
+                        <select 
+                            onChange={handleChange} 
+                            id="account" 
+                            name="account" 
+                            value={transactionData.account}
+                            className="form-select dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
+                        >
+                            <option value="">Select Account</option>
+                            {accounts.map((account) => (
+                                <option key={account.id} value={account.id} className="dark:bg-gray-700">
+                                    {account.name} - {account.bank}
                                 </option>
                             ))}
                         </select>
