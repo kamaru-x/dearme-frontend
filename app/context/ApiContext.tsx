@@ -32,7 +32,7 @@ interface Api {
 }
 
 const api: Api = {
-    baseUrl: 'http://localhost:8000/api',
+    baseUrl: 'http://dearme.pythonanywhere.com/api',
     endpoints: {
         test: '/test/',
         login: '/token/',
