@@ -1,11 +1,10 @@
 'use client';
 
-import { Suspense } from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { useApi } from '@/app/context/ApiContext';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 interface ChecklistItem {
     id: number;
@@ -20,12 +19,12 @@ interface PreviousDay {
     completed: boolean;
 }
 
-function ChecklistContent() {
+const ChecklistPage = () => {
     const api = useApi();
-    const searchParams = useSearchParams();
+    const router = useRouter();
     const [tasks, setTasks] = useState<ChecklistItem[]>([]);
     const [previousDays, setPreviousDays] = useState<PreviousDay[]>([]);
-    const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'today');
+    const [activeTab, setActiveTab] = useState('today');
     const [pressTimer, setPressTimer] = useState<NodeJS.Timeout | null>(null);
     const [pressingId, setPressingId] = useState<number | null>(null);
 
@@ -146,7 +145,7 @@ function ChecklistContent() {
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
                             {previousDays.map((item) => (
-                                <Link href={`/checklist/${item.date}`} key={item.date}>
+                                <Link href={`/checklist/${item.date}`} key={item.date} onClick={() => setActiveTab('previous')}>
                                     <div className="p-4 rounded-lg shadow-md bg-white dark:bg-gray-800 hover:shadow-lg transition-shadow">
                                         <div className="flex items-center justify-between">
                                             <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">{item.date}</h3>
@@ -160,18 +159,6 @@ function ChecklistContent() {
                 </div>
             </div>
         </div>
-    );
-}
-
-const ChecklistPage = () => {
-    return (
-        <Suspense fallback={
-            <div className="min-h-screen mx-5 flex items-center justify-center">
-                <div className="animate-pulse">Loading...</div>
-            </div>
-        }>
-            <ChecklistContent />
-        </Suspense>
     );
 };
 
