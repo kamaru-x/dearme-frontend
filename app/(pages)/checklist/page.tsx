@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState } from 'react'
-import Header from '@/app/components/Header'
 import OverviewCard from '@/app/components/OverviewCard'
 
 const ChecklistPage = () => {
@@ -46,7 +45,6 @@ const ChecklistPage = () => {
     return (
         <div className="min-h-screen mx-5">
             <div className="w-full">
-                <Header page="checklist"/>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
                     <OverviewCard color="bg-gradient-to-r from-green-400 to-green-500" icon="fas fa-list-ol" title="Good Day's" value="65"/>

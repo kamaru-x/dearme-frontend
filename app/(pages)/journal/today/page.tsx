@@ -36,7 +36,6 @@ const NewJournalPage = () => {
         <div className="min-h-screen mx-5">
             <ToastContainer position="top-right" autoClose={3000} />
             <div className="w-full">
-                <Header page="journals" />
 
                 <div className="mt-8">
                     <form onSubmit={createJournal} className="w-full mx-auto">

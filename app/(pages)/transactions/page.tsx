@@ -3,7 +3,6 @@
 import React, { useState } from 'react'
 import TransactionTable from '@/app/components/transactions/TransactionTable'
 import Transaction from '@/app/components/transactions/Transaction'
-import Header from '@/app/components/Header'
 import OverviewCard from '@/app/components/OverviewCard'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -78,8 +77,6 @@ const TransactionsPage = () => {
         <div className="min-h-screen mx-5">
             <ToastContainer position="top-right" autoClose={3000} />
             <div className="w-full">
-                <Header page="transactions"/>
-
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
                     <OverviewCard color="bg-gradient-to-r from-green-400 to-green-500" icon="fas fa-indian-rupee-sign" title="Total Income" value={overview.credited}/>
                     <OverviewCard color="bg-gradient-to-r from-red-400 to-red-500" icon="fas fa-indian-rupee-sign" title="Total Expense" value={overview.debited}/>

@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState } from 'react'
-import Header from '@/app/components/Header'
 import OverviewCard from '@/app/components/OverviewCard'
 import TodoTable from '@/app/components/todo/TodoTable'
 import CreateTodo from '@/app/components/todo/CreateTodo'
@@ -50,8 +49,6 @@ const Page = () => {
         <div className="min-h-screen mx-5">
             <ToastContainer position="top-right" autoClose={3000} />
             <div className="w-full">
-                <Header page="todo"/>
-
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
                     <OverviewCard color="bg-gradient-to-r from-red-400 to-red-500" icon="fas fa-circle-check" title="High Priority" value={overview.high}/>
                     <OverviewCard color="bg-gradient-to-r from-yellow-400 to-yellow-500" icon="fas fa-circle-check" title="Normal Priority" value={overview.normal}/>

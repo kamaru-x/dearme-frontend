@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react'
 import OverviewCard from '../../components/OverviewCard'
 import TransactionTable from '../../components/transactions/TransactionTable'
 import TodoTable from '../../components/todo/TodoTable'
-import Header from '../../components/Header'
 import ThemeToggle from '../../components/ThemeToggle'
 import { useApi } from '@/app/context/ApiContext'
 
@@ -106,8 +105,6 @@ const Page = () => {
     return (
         <div className="min-h-screen mx-5">
             <div className="w-full">
-                <Header page="dashboard"/>
-
                 <div className="grid md:grid-cols-3 gap-6 mt-8">
                     <OverviewCard 
                         color="bg-gradient-to-r from-green-400 to-green-500" 
