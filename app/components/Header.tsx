@@ -55,7 +55,7 @@ const Header = () => {
                         ${currentPage === 'masters' 
                             ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400' 
                             : 'hover:bg-gray-100 dark:hover:bg-gray-700 group focus:bg-blue-50 dark:focus:bg-blue-900/50 focus:text-blue-600 dark:focus:text-blue-400'}`}>
-                        <i className="fas fa-database text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400"></i>
+                        <i className="fas fa-bullseye text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400"></i>
                         <span className="text-sm text-gray-600 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400">Masters</span>
                     </Link>
                 </div>
