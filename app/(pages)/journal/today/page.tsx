@@ -2,45 +2,53 @@
 
 import React, { useState } from 'react'
 import Header from '@/app/components/Header'
-import { useRouter } from 'next/navigation'
+import Link from 'next/link';
+import { useApi } from '@/app/context/ApiContext';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/navigation';
 
 const NewJournalPage = () => {
     const router = useRouter();
-    const [journal, setJournal] = useState({
-        title: '',
-        content: '',
-        mood: 'neutral',
-        date: new Date().toISOString().split('T')[0]
-    });
+    const api = useApi();
+    const [journal, setJournal] = useState({title: '', content: '', mood: 'neutral', date: new Date().toISOString().split('T')[0]});
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const createJournal = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Handle journal submission
-        console.log('Journal submitted:', journal);
-        // Redirect back to journals page after submission
-        router.push('/journal/list');
+        try {
+            const response = await api.fetch(api.endpoints.listJournals, {method: 'POST', body: JSON.stringify(journal)});
+            const result = await response.json();
+
+            if (response.ok) {
+                setJournal({title: '', content: '', mood: 'neutral', date: new Date().toISOString().split('T')[0]});
+                toast.success('Journal created successfully');
+                router.push('/journal/');
+            } else {
+                toast.error(result.message);
+            }
+        } catch (error) {
+            console.log('Error creating journal:', error);
+            toast.error('Failed to create journal');
+        }
     };
 
     return (
         <div className="min-h-screen mx-5">
+            <ToastContainer position="top-right" autoClose={3000} />
             <div className="w-full">
                 <Header page="journals" />
 
                 <div className="mt-8">
-                    <form onSubmit={handleSubmit} className="w-full mx-auto">
+                    <form onSubmit={createJournal} className="w-full mx-auto">
                         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
                             <div className="flex justify-between items-center mb-6">
                                 <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
                                     New Journal Entry
                                 </h1>
-                                <button 
-                                    type="button"
-                                    onClick={() => router.push('/journal/list')}
-                                    className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
-                                >
+                                <Link href="/journal/" className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
                                     <i className="fas fa-arrow-left mr-2"></i>
                                     Back to List
-                                </button>
+                                </Link>
                             </div>
 
                             {/* Title Input */}
