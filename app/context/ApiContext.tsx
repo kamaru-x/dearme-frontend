@@ -17,7 +17,8 @@ interface ApiEndpoints {
     listTodos: string;
     todoDetail: (id: number) => string;
     checkList: string;
-    checklistDetail: (date: string) => string;
+    checklistDetail: (id: number) => string;
+    previousDays: string;
     listJournals: string;
     journalDetail: (date: string) => string;
 }
@@ -45,8 +46,9 @@ const api: Api = {
         taskDetail: (id: number) => `/tasks/${id}/`,
         listTodos: '/todos/',
         todoDetail: (id: number) => `/todos/${id}/`,
-        checkList: '/checklists/',
-        checklistDetail: (date: string) => `/checklists/${date}/`,
+        checkList: '/checklist/',
+        checklistDetail: (id: number) => `/checklist/${id}/`,
+        previousDays: '/checklists/',
         listJournals: '/journals/',
         journalDetail: (date: string) => `/journals/${date}/`,
     },
