@@ -1,6 +1,5 @@
 'use client';
 
-import { Suspense } from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { useApi } from '@/app/context/ApiContext';
 import { toast } from 'react-toastify';
@@ -20,7 +19,7 @@ interface PreviousDay {
     completed: boolean;
 }
 
-function ChecklistContent() {
+const ChecklistPage = () => {
     const api = useApi();
     const searchParams = useSearchParams();
     const [tasks, setTasks] = useState<ChecklistItem[]>([]);
@@ -160,18 +159,6 @@ function ChecklistContent() {
                 </div>
             </div>
         </div>
-    );
-}
-
-const ChecklistPage = () => {
-    return (
-        <Suspense fallback={
-            <div className="min-h-screen mx-5 flex items-center justify-center">
-                <div className="animate-pulse">Loading...</div>
-            </div>
-        }>
-            <ChecklistContent />
-        </Suspense>
     );
 };
 
