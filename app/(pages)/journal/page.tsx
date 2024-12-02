@@ -75,7 +75,7 @@ const JournalPage = () => {
                             </div>
                         </Link>
                     ) : (
-                        <Link href={`/journal/read/${todayJournal.id}`} className="flex items-center p-6 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 ease-in-out rounded-xl border-2 border-dashed border-blue-300 dark:border-blue-500/50 bg-white dark:bg-gray-800 shadow-md hover:shadow-lg group text-left w-full">
+                        <Link href="/journal/today" className="flex items-center p-6 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 ease-in-out rounded-xl border-2 border-dashed border-blue-300 dark:border-blue-500/50 bg-white dark:bg-gray-800 shadow-md hover:shadow-lg group text-left w-full">
                             <div className="flex-shrink-0 w-16 h-16 mr-6 bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/50 dark:to-blue-800/50 rounded-lg flex flex-col items-center justify-center">
                                 <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">{today.day}</span>
                                 <span className="text-xs font-medium text-blue-500 dark:text-blue-300">{today.month}</span>
