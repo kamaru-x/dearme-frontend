@@ -35,7 +35,7 @@ interface Stats {
     totalTodos: number;
 }
 
-const page = () => {
+const Page = () => {
     const api = useApi();
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [todos, setTodos] = useState<Todo[]>([]);
@@ -156,4 +156,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page

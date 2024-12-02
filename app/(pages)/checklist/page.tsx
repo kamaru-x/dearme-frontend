@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import Header from '@/app/components/Header'
 import OverviewCard from '@/app/components/OverviewCard'
 
-const page = () => {
+const ChecklistPage = () => {
     const [todos, setTodos] = useState([
         { id: 1, text: "Go to gym", completed: false },
         { id: 2, text: "Wash clothes", completed: false },
@@ -123,4 +123,4 @@ const page = () => {
     )
 }
 
-export default page
+export default ChecklistPage
