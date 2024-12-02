@@ -3,6 +3,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useApi } from '@/app/context/ApiContext';
 import { toast } from 'react-toastify';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 interface ChecklistItem {
     id: number;
@@ -19,9 +21,10 @@ interface PreviousDay {
 
 const ChecklistPage = () => {
     const api = useApi();
+    const searchParams = useSearchParams();
     const [tasks, setTasks] = useState<ChecklistItem[]>([]);
     const [previousDays, setPreviousDays] = useState<PreviousDay[]>([]);
-    const [activeTab, setActiveTab] = useState('today');
+    const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'today');
     const [pressTimer, setPressTimer] = useState<NodeJS.Timeout | null>(null);
     const [pressingId, setPressingId] = useState<number | null>(null);
 
@@ -142,14 +145,14 @@ const ChecklistPage = () => {
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
                             {previousDays.map((item) => (
-                                <div key={item.date} 
-                                    className="p-4 rounded-lg shadow-md bg-white dark:bg-gray-800"
-                                >
-                                    <div className="flex items-center justify-between">
-                                        <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">{item.date}</h3>
-                                        <i className={`fas ${item.completed ? 'fa-check-circle text-green-500' : 'fa-times-circle text-red-500'} text-lg`}></i>
+                                <Link href={`/checklist/${item.date}`} key={item.date}>
+                                    <div className="p-4 rounded-lg shadow-md bg-white dark:bg-gray-800 hover:shadow-lg transition-shadow">
+                                        <div className="flex items-center justify-between">
+                                            <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">{item.date}</h3>
+                                            <i className={`fas ${item.completed ? 'fa-check-circle text-green-500' : 'fa-times-circle text-red-500'} text-lg`}></i>
+                                        </div>
                                     </div>
-                                </div>
+                                </Link>
                             ))}
                         </div>
                     )}
