@@ -19,12 +19,12 @@ const Header = () => {
                         <span className="text-sm text-gray-600 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400">Dashboard</span>
                     </Link>
 
-                    <Link href="/transactions/" className={`flex flex-1 items-center justify-center space-x-2 px-4 py-2 rounded-lg 
-                        ${currentPage === 'transactions' 
+                    <Link href="/accounts/" className={`flex flex-1 items-center justify-center space-x-2 px-4 py-2 rounded-lg 
+                        ${currentPage === 'accounts' 
                             ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400' 
                             : 'hover:bg-gray-100 dark:hover:bg-gray-700 group focus:bg-blue-50 dark:focus:bg-blue-900/50 focus:text-blue-600 dark:focus:text-blue-400'}`}>
                         <i className="fas fa-credit-card text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400"></i>
-                        <span className="text-sm text-gray-600 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400">Transactions</span>
+                        <span className="text-sm text-gray-600 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400">Accounts</span>
                     </Link>
 
                     <Link href="/todo" className={`flex flex-1 items-center justify-center space-x-2 px-4 py-2 rounded-lg 

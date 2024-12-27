@@ -9,7 +9,7 @@ export default function PagesLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen mb-10">
       <Header />
       {children}
     </div>

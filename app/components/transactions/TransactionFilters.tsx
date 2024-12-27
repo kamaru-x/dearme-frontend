@@ -8,22 +8,29 @@ interface TransactionFiltersProps {
         fromDate: string;
         toDate: string;
         category: string;
+        account: string;
     }) => void;
 }
 
 interface Category {
     id: number;
-    type: string;
+    name: string;
+}
+
+interface Account {
+    id: number;
     name: string;
 }
 
 const TransactionFilters = ({ onFilterChange }: TransactionFiltersProps) => {
     const api = useApi()
     const [categories, setCategories] = React.useState<Category[]>([])
-    const [filters, setFilters] = React.useState<{fromDate: string, toDate: string, category: string}>({
+    const [accounts, setAccounts] = React.useState<Account[]>([])
+    const [filters, setFilters] = React.useState<{fromDate: string, toDate: string, account: string, category: string,}>({
         fromDate: '',
         toDate: '',
-        category: ''
+        account: '',
+        category: '',
     })
 
     const fetchCategories = async () => {
@@ -37,8 +44,20 @@ const TransactionFilters = ({ onFilterChange }: TransactionFiltersProps) => {
         }
     }
 
+    const fetchAccounts = async () => {
+        try {
+            const response = await api.fetch(api.endpoints.listAccounts);
+            const result = await response.json();
+            setAccounts(result.data || []);
+        } catch (error) {
+            console.log('Error fetching accounts:', error)
+            setAccounts([])
+        }
+    }
+
     React.useEffect(() => {
         fetchCategories()
+        fetchAccounts()
     }, [api])
 
     const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -52,7 +71,7 @@ const TransactionFilters = ({ onFilterChange }: TransactionFiltersProps) => {
     }
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
             <div>
                 <label htmlFor="fromDate" className="block text-sm font-medium text-gray-700 dark:text-gray-300">From Date</label>
                 <input 
@@ -75,6 +94,24 @@ const TransactionFilters = ({ onFilterChange }: TransactionFiltersProps) => {
                     onChange={handleFilterChange}
                     className="form-input dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 w-full"
                 />
+            </div>
+
+            <div>
+                <label htmlFor="account" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Account</label>
+                <select 
+                    id="account" 
+                    name="account"
+                    value={filters.account}
+                    onChange={handleFilterChange}
+                    className="form-select dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 w-full"
+                >
+                    <option value="">All Accounts</option>
+                    {accounts.map((account) => (
+                        <option key={account.id} value={account.id} className="dark:bg-gray-700">
+                            {account.name}
+                        </option>
+                    ))}
+                </select>
             </div>
 
             <div>
