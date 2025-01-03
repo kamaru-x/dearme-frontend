@@ -127,7 +127,7 @@ const Accounts = ({ api, showDeleteModal }: Props) => {
                                         {account.type_value}
                                     </td>
                                     <td className="min-w-48 text-center text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
-                                        {account.number}
+                                        XXXXXXXXXXXX
                                     </td>
                                     <td className="min-w-24 text-right flex items-center space-x-2 whitespace-nowrap">
                                         <button 
