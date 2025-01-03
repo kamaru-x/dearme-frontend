@@ -96,6 +96,7 @@ const Accounts = ({ api, showDeleteModal }: Props) => {
                         <select name="type" id="type" value={accountData.type} onChange={handleChange} className="form-select dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200">
                             <option value="" className="dark:bg-gray-700">Select Type</option>
                             <option value="savings" className="dark:bg-gray-700">Savings</option>
+                            <option value="inhand" className="dark:bg-gray-700">In Hand</option>
                             <option value="slary_account" className="dark:bg-gray-700">Salary Account</option>
                             <option value="primary_account" className="dark:bg-gray-700">Primary Account</option>
                             <option value="secondary_account" className="dark:bg-gray-700">Secondary Account</option>
