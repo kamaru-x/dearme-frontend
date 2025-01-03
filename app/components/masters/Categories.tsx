@@ -3,9 +3,10 @@ import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 interface Category {
-    id: number;
-    type: string;
-    name: string;
+    id: number,
+    type: string,
+    type_value: string,
+    name: string,
 }
 
 interface Props {
@@ -91,6 +92,8 @@ const Categories = ({ api, showDeleteModal }: Props) => {
                             <option value="" className="dark:bg-gray-700">Select Type</option>
                             <option value="credit" className="dark:bg-gray-700">Credit</option>
                             <option value="debit" className="dark:bg-gray-700">Debit</option>
+                            <option value="credit_transfer" className="dark:bg-gray-700">Credit Transfer</option>
+                            <option value="debit_transfer" className="dark:bg-gray-700">Debit Transfer</option>
                         </select>
                         <input type="text" id="name" name="name" value={categoryData.name} onChange={handleChange} placeholder="Category Name" className="form-input w-full dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:placeholder-gray-400"/>
                         <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
@@ -110,7 +113,9 @@ const Categories = ({ api, showDeleteModal }: Props) => {
                                         {index + 1}
                                     </td>
                                     <td className="min-w-48 text-center text-sm text-gray-900 dark:text-gray-200 whitespace-nowrap">
-                                        {category.type}
+                                        <span className={`text-sm font-medium ${category.type === 'credit' ? 'text-green-600 dark:text-green-400' : category.type === 'credit_transfer' || category.type === 'debit_transfer' ? 'text-yellow-600 dark:text-yellow-400' : 'text-red-600 dark:text-red-400'}`}>
+                                            {category.type_value}
+                                        </span>
                                     </td>
                                     <td className="min-w-48 text-center text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
                                         {category.name}

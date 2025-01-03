@@ -10,12 +10,14 @@ import OverviewCard from '@/app/components/OverviewCard'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useApi } from '@/app/context/ApiContext'
+import Accounts from '@/app/components/transactions/Accounts'
 
 interface Transaction{
     id: number,
     date: string,
     title: string,
-    type: 'credit' | 'debit',
+    type: string,
+    type_value: string,
     account: number,
     account_name: string,
     category: number,
@@ -27,14 +29,15 @@ interface TransactionOverview {
     credited: number
     debited: number
     balance: number
+    savings: number
 }
 
 const TransactionsPage = () => {
     const api = useApi();
-    const [activeTab, setActiveTab] = useState('OVERVIEW');
+    const [activeTab, setActiveTab] = useState('ACCOUNTS OVERVIEW');
     const [create, setCreate] = useState(false)
     const [transactions, setTransactions] = useState<Transaction[]>([])
-    const [overview, setOverview] = useState<TransactionOverview>({credited: 0, debited: 0, balance: 0})
+    const [overview, setOverview] = useState<TransactionOverview>({credited: 0, debited: 0, balance: 0, savings: 0})
     const [filters, setFilters] = useState<{fromDate: string, toDate: string, account: string, category: string}>({fromDate: '', toDate: '', account: '', category: ''})
     const [editTransaction, setEditTransaction] = useState<Transaction | null>(null)
 
@@ -55,11 +58,11 @@ const TransactionsPage = () => {
             const response = await api.fetch(url)
             const result = await response.json()
             setTransactions(result.data || [])
-            setOverview({credited: result.credited || 0, debited: result.debited || 0, balance: result.balance || 0})
+            setOverview({credited: result.credited || 0, debited: result.debited || 0, balance: result.balance || 0, savings: result.savings || 0})
         } catch (error) {
             console.log('Error fetching transactions:', error)
             setTransactions([])
-            setOverview({credited: 0, debited: 0, balance: 0})
+            setOverview({credited: 0, debited: 0, balance: 0, savings: 0})
             toast.error('Failed to fetch transactions')
         }
     }
@@ -81,15 +84,20 @@ const TransactionsPage = () => {
         <div className="min-h-screen mx-5">
             <ToastContainer position="top-right" autoClose={3000} />
             <div className="w-full">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-8">
                     <OverviewCard color="bg-gradient-to-r from-green-400 to-green-500" icon="fas fa-indian-rupee-sign" title="Total Income" value={overview.credited}/>
                     <OverviewCard color="bg-gradient-to-r from-red-400 to-red-500" icon="fas fa-indian-rupee-sign" title="Total Expense" value={overview.debited}/>
                     <OverviewCard color="bg-gradient-to-r from-yellow-400 to-yellow-500" icon="fas fa-indian-rupee-sign" title="Total Balance" value={overview.balance}/>
+                    <OverviewCard color="bg-gradient-to-r from-blue-400 to-blue-500" icon="fas fa-indian-rupee-sign" title="Total Savings" value={overview.savings}/>
                 </div>
 
                 <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mt-8">
-                    <button onClick={() => setActiveTab('OVERVIEW')} className={`tab-button w-full py-2 rounded-lg shadow-md focus:outline-none transition-colors duration-200
-                        ${ activeTab === 'OVERVIEW' ? 'bg-gradient-to-r from-blue-400 to-blue-500 text-white': 'text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800'}`}> OVERVIEW
+                    {/* <button onClick={() => setActiveTab('TRANSACTION OVERVIEW')} className={`tab-button w-full py-2 rounded-lg shadow-md focus:outline-none transition-colors duration-200
+                        ${ activeTab === 'TRANSACTION OVERVIEW' ? 'bg-gradient-to-r from-blue-400 to-blue-500 text-white': 'text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800'}`}> TRANSACTION OVERVIEW
+                    </button> */}
+
+                    <button onClick={() => setActiveTab('ACCOUNTS OVERVIEW')} className={`tab-button w-full py-2 rounded-lg shadow-md focus:outline-none transition-colors duration-200
+                        ${ activeTab === 'ACCOUNTS OVERVIEW' ? 'bg-gradient-to-r from-blue-400 to-blue-500 text-white': 'text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800'}`}> ACCOUNTS OVERVIEW
                     </button>
 
                     <button onClick={() => setActiveTab('MONTH')} className={`tab-button w-full py-2 rounded-lg shadow-md focus:outline-none transition-colors duration-200
@@ -102,13 +110,17 @@ const TransactionsPage = () => {
                 </div>
 
                 <div className="mt-8">
-                    {activeTab === 'OVERVIEW' ? (
+                    {activeTab === 'TRANSACTION OVERVIEW' ? (
                         <>
                             <Overview api={api}/>
                         </>
                     ) : activeTab === 'MONTH' ? (
                         <>
                             <Report api={api}/>
+                        </>
+                    ) : activeTab === 'ACCOUNTS OVERVIEW'? (
+                        <>
+                            <Accounts api={api}/>
                         </>
                     ) : activeTab === 'TRANSACTIONS' ? (
                         <>

@@ -188,6 +188,8 @@ const Transaction = ({ setCreate, fetchTransactions, editData }: TransactionProp
                             <option value="">Select Type</option>
                             <option value="credit" className="dark:bg-gray-700">Credit</option>
                             <option value="debit" className="dark:bg-gray-700">Debit</option>
+                            <option value="credit_transfer" className="dark:bg-gray-700">Credit Transfer</option>
+                            <option value="debit_transfer" className="dark:bg-gray-700">Debit Transfer</option>
                         </select>
                     </div>
 

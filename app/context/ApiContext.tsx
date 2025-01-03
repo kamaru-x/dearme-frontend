@@ -16,6 +16,7 @@ interface ApiEndpoints {
     transactionOverview: string;
     transactionReport: string;
     listTransactions: string;
+    accountsOverview: string;
     transactionDetail: (id: number) => string;
 
     listTasks: string;
@@ -44,6 +45,7 @@ interface Api {
 
 const api: Api = {
     baseUrl: 'https://dearme.pythonanywhere.com/api',
+    // baseUrl: 'http://127.0.0.1:8000/api',
 
     endpoints: {
         test: '/test/',
@@ -57,6 +59,7 @@ const api: Api = {
         categoryDetail: (id: number) => `/categories/${id}/`,
 
         transactionOverview: '/transactions/overview/',
+        accountsOverview:  '/transactions/accounts/',
         transactionReport: '/transactions/report/',
         listTransactions: '/transactions/',
         transactionDetail: (id: number) => `/transaction/${id}/`,

@@ -5,6 +5,8 @@ import 'react-toastify/dist/ReactToastify.css'
 interface Account {
     id: number;
     date: string;
+    type: string;
+    type_value: string;
     name: string;
     bank: string;
     number: string;
@@ -17,9 +19,9 @@ interface Props {
 
 const Accounts = ({ api, showDeleteModal }: Props) => {
     const [accounts, setAccounts] = useState<Account[]>([]);
-    const [accountData, setAccountData] = useState({name: '', bank: '', number: ''});
+    const [accountData, setAccountData] = useState({type: '', name: '', bank: '', number: ''});
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target
         setAccountData({
             ...accountData,
@@ -46,7 +48,7 @@ const Accounts = ({ api, showDeleteModal }: Props) => {
             const result = await response.json()
 
             if (response.ok) {
-                setAccountData({name: '', bank: '', number: ''})
+                setAccountData({type: '', name: '', bank: '', number: ''})
                 fetchAccounts()
                 toast.success(result.message)
             } else {
@@ -91,7 +93,13 @@ const Accounts = ({ api, showDeleteModal }: Props) => {
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                         <input type="text" id="name" name="name" value={accountData.name} onChange={handleChange} placeholder="Account Name" className="form-input w-full dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:placeholder-gray-400"/>
                         <input type="text" id="bank" name="bank" value={accountData.bank} onChange={handleChange} placeholder="Bank Name" className="form-input w-full dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:placeholder-gray-400"/>
-                        <input type="text" id="number" name="number" value={accountData.number} onChange={handleChange} placeholder="Account Number" className="form-input w-full dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:placeholder-gray-400"/>
+                        <select name="type" id="type" value={accountData.type} onChange={handleChange} className="form-select dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200">
+                            <option value="" className="dark:bg-gray-700">Select Type</option>
+                            <option value="savings" className="dark:bg-gray-700">Savings</option>
+                            <option value="slary_account" className="dark:bg-gray-700">Salary Account</option>
+                            <option value="primary_account" className="dark:bg-gray-700">Primary Account</option>
+                            <option value="secondary_account" className="dark:bg-gray-700">Secondary Account</option>
+                        </select>
                         <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
                             Create Account
                         </button>
@@ -114,6 +122,9 @@ const Accounts = ({ api, showDeleteModal }: Props) => {
                                     </td>
                                     <td className="min-w-48 text-center text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
                                         {account.bank}
+                                    </td>
+                                    <td className="min-w-48 text-center text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                                        {account.type_value}
                                     </td>
                                     <td className="min-w-48 text-center text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
                                         {account.number}

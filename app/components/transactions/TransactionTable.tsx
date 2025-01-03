@@ -8,7 +8,8 @@ interface Transaction{
     id: number,
     date: string,
     title: string,
-    type: 'credit' | 'debit',
+    type: string,
+    type_value: string,
     account: number,
     account_name: string,
     category: number,
@@ -73,8 +74,8 @@ const TransactionTable = ({ show_btn, transactions, api, onUpdate, onEdit }: Tra
                                         {transaction.title}
                                     </td>
                                     <td className="w-32 text-center whitespace-nowrap">
-                                        <span className={`text-sm font-medium ${transaction.type === 'credit' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
-                                            {transaction.type}
+                                        <span className={`text-sm font-medium ${transaction.type === 'credit' ? 'text-green-600 dark:text-green-400' : transaction.type === 'credit_transfer' || transaction.type === 'debit_transfer' ? 'text-yellow-600 dark:text-yellow-400' : 'text-red-600 dark:text-red-400'}`}>
+                                            {transaction.type_value}
                                         </span>
                                     </td>
                                     <td className="w-32 text-center text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
@@ -87,7 +88,7 @@ const TransactionTable = ({ show_btn, transactions, api, onUpdate, onEdit }: Tra
                                         {transaction.date}
                                     </td>
                                     <td className="w-32 text-center whitespace-nowrap">
-                                        <span className={`text-sm font-medium ${transaction.type === 'credit' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                                        <span className={`text-sm font-medium ${transaction.type === 'credit' ? 'text-green-600 dark:text-green-400' : transaction.type === 'credit_transfer' || transaction.type === 'debit_transfer' ? 'text-yellow-600 dark:text-yellow-400' : 'text-red-600 dark:text-red-400'}`}>
                                             ₹{transaction.amount}
                                         </span>
                                     </td>
