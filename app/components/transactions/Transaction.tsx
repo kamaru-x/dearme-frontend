@@ -104,12 +104,12 @@ const Transaction = ({ setCreate, fetchTransactions, editData }: TransactionProp
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const url = editData 
+            const url = editData
                 ? api.endpoints.transactionDetail(editData.id)
                 : api.endpoints.listTransactions;
-            
+
             const method = editData ? 'PUT' : 'POST';
-            
+
             // Format the data before sending
             const formattedData = {
                 ...transactionData,
@@ -117,7 +117,7 @@ const Transaction = ({ setCreate, fetchTransactions, editData }: TransactionProp
                 category: Number(transactionData.category),
                 account: Number(transactionData.account)
             };
-            
+
             const response = await api.fetch(url, {
                 method: method,
                 headers: {
@@ -125,12 +125,12 @@ const Transaction = ({ setCreate, fetchTransactions, editData }: TransactionProp
                 },
                 body: JSON.stringify(formattedData)
             });
-            
+
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Failed to save transaction');
             }
-            
+
             const result = await response.json();
             setTransactionData({title: '', type: '', category: '', account: '', amount: 0, date: ''});
             toast.success(result.message || 'Transaction saved successfully');
@@ -153,24 +153,24 @@ const Transaction = ({ setCreate, fetchTransactions, editData }: TransactionProp
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Title</label>
-                        <input 
-                            onChange={handleChange} 
-                            type="text" 
-                            id="title" 
-                            name="title" 
+                        <input
+                            onChange={handleChange}
+                            type="text"
+                            id="title"
+                            name="title"
                             value={transactionData.title}
-                            className="form-input dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:placeholder-gray-400" 
+                            className="form-input dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:placeholder-gray-400"
                             placeholder="Enter transaction title"
                         />
                     </div>
 
                     <div>
                         <label htmlFor="date" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Date</label>
-                        <input 
-                            onChange={handleChange} 
-                            type="date" 
-                            id="date" 
-                            name="date" 
+                        <input
+                            onChange={handleChange}
+                            type="date"
+                            id="date"
+                            name="date"
                             value={transactionData.date}
                             className="form-input dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
                         />
@@ -178,27 +178,25 @@ const Transaction = ({ setCreate, fetchTransactions, editData }: TransactionProp
 
                     <div>
                         <label htmlFor="type" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Type</label>
-                        <select 
-                            onChange={handleChange} 
-                            id="type" 
-                            name="type" 
+                        <select
+                            onChange={handleChange}
+                            id="type"
+                            name="type"
                             value={transactionData.type}
                             className="form-select dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
                         >
                             <option value="">Select Type</option>
                             <option value="credit" className="dark:bg-gray-700">Credit</option>
                             <option value="debit" className="dark:bg-gray-700">Debit</option>
-                            <option value="credit_transfer" className="dark:bg-gray-700">Credit Transfer</option>
-                            <option value="debit_transfer" className="dark:bg-gray-700">Debit Transfer</option>
                         </select>
                     </div>
 
                     <div>
                         <label htmlFor="category" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
-                        <select 
-                            onChange={handleChange} 
-                            id="category" 
-                            name="category" 
+                        <select
+                            onChange={handleChange}
+                            id="category"
+                            name="category"
                             value={transactionData.category}
                             className="form-select dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
                         >
@@ -213,10 +211,10 @@ const Transaction = ({ setCreate, fetchTransactions, editData }: TransactionProp
 
                     <div>
                         <label htmlFor="account" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Account</label>
-                        <select 
-                            onChange={handleChange} 
-                            id="account" 
-                            name="account" 
+                        <select
+                            onChange={handleChange}
+                            id="account"
+                            name="account"
                             value={transactionData.account}
                             className="form-select dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
                         >
@@ -231,27 +229,27 @@ const Transaction = ({ setCreate, fetchTransactions, editData }: TransactionProp
 
                     <div>
                         <label htmlFor="amount" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Amount</label>
-                        <input 
-                            onChange={handleChange} 
-                            type="number" 
-                            id="amount" 
-                            name="amount" 
+                        <input
+                            onChange={handleChange}
+                            type="number"
+                            id="amount"
+                            name="amount"
                             value={transactionData.amount}
-                            className="form-input dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200" 
+                            className="form-input dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
                             placeholder="Enter amount"
                         />
                     </div>
                 </div>
 
                 <div className="mt-6 flex justify-end space-x-3">
-                    <button 
+                    <button
                         type="button"
                         onClick={() => setCreate(false)}
                         className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600"
                     >
                         Cancel
                     </button>
-                    <button 
+                    <button
                         type="submit"
                         className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
                     >

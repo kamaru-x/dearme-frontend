@@ -94,16 +94,16 @@ const TransactionTable = ({ show_btn, transactions, api, onUpdate, onEdit }: Tra
                                     </td>
                                     {show_btn === true && (
                                         <td className="w-24 text-right flex items-center space-x-2 whitespace-nowrap">
-                                            <button 
+                                            <button
                                                 onClick={() => onEditClick(transaction)}
-                                                className="p-1 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors duration-150" 
+                                                className="p-1 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors duration-150"
                                                 title="Edit transaction"
                                             >
                                                 <i className="fas fa-pen-to-square w-5 h-5"></i>
                                             </button>
-                                            <button 
-                                                onClick={() => handleDeleteClick('transaction', transaction.id, () => deleteTransaction(transaction.id))} 
-                                                className="p-1 text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 transition-colors duration-150" 
+                                            <button
+                                                onClick={() => handleDeleteClick('transaction', transaction.id, () => deleteTransaction(transaction.id))}
+                                                className="p-1 text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 transition-colors duration-150"
                                                 title="Delete transaction"
                                             >
                                                 <i className="fas fa-trash-alt w-5 h-5"></i>

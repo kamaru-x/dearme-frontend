@@ -95,11 +95,9 @@ const Accounts = ({ api, showDeleteModal }: Props) => {
                         <input type="text" id="bank" name="bank" value={accountData.bank} onChange={handleChange} placeholder="Bank Name" className="form-input w-full dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:placeholder-gray-400"/>
                         <select name="type" id="type" value={accountData.type} onChange={handleChange} className="form-select dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200">
                             <option value="" className="dark:bg-gray-700">Select Type</option>
-                            <option value="savings" className="dark:bg-gray-700">Savings</option>
-                            <option value="inhand" className="dark:bg-gray-700">In Hand</option>
-                            <option value="slary_account" className="dark:bg-gray-700">Salary Account</option>
                             <option value="primary_account" className="dark:bg-gray-700">Primary Account</option>
                             <option value="secondary_account" className="dark:bg-gray-700">Secondary Account</option>
+                            <option value="savings_account" className="dark:bg-gray-700">Savings Account</option>
                         </select>
                         <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
                             Create Account
@@ -131,7 +129,7 @@ const Accounts = ({ api, showDeleteModal }: Props) => {
                                         XXXXXXXXXXXX
                                     </td>
                                     <td className="min-w-24 text-right flex items-center space-x-2 whitespace-nowrap">
-                                        <button 
+                                        <button
                                             onClick={() => handleDeleteClick('account', account.id, () => deleteAccount(account.id))}
                                             className="p-1 text-red-600 hover:text-red-800 dark:text-red-500 dark:hover:text-red-400 transition-colors duration-150"
                                             title="Delete account"

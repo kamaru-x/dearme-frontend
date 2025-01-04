@@ -5,7 +5,7 @@ import { toast } from 'react-toastify'
 
 interface Overview{
     category: string,
-    type: 'credit' | 'debit',
+    type: string,
     transactions: string,
     amount: number
 }
@@ -20,7 +20,7 @@ const Overview = ({api} : OverviewProps) => {
 
     const fetchOverviews = async () => {
         try {
-            let url = api.endpoints.transactionOverview;    
+            let url = api.endpoints.transactionOverview;
             const response = await api.fetch(url)
             const result = await response.json()
             setOverviews(result.data || [])
@@ -53,12 +53,12 @@ const Overview = ({api} : OverviewProps) => {
                                         {overview.transactions}
                                     </td>
                                     <td className="w-32 text-center whitespace-nowrap">
-                                        <span className={`text-sm font-medium ${overview.type === 'credit' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                                        <span className={`text-sm font-medium ${overview.type === 'Credit' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                                             {overview.type}
                                         </span>
                                     </td>
                                     <td className="w-32 text-center whitespace-nowrap">
-                                        <span className={`text-sm font-medium ${overview.type === 'credit' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                                        <span className={`text-sm font-medium ${overview.type === 'Credit' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                                             ₹{overview.amount}
                                         </span>
                                     </td>

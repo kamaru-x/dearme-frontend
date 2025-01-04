@@ -15,9 +15,13 @@ interface ApiEndpoints {
 
     transactionOverview: string;
     transactionReport: string;
-    listTransactions: string;
     accountsOverview: string;
+
+    listTransactions: string;
     transactionDetail: (id: number) => string;
+
+    listTransfers: string;
+    transferDetail: (id: number) => string;
 
     listTasks: string;
     taskDetail: (id: number) => string;
@@ -44,8 +48,8 @@ interface Api {
 }
 
 const api: Api = {
-    baseUrl: 'https://dearme.pythonanywhere.com/api',
-    // baseUrl: 'http://127.0.0.1:8000/api',
+    // baseUrl: 'https://dearme.pythonanywhere.com/api',
+    baseUrl: 'http://127.0.0.1:8000/api',
 
     endpoints: {
         test: '/test/',
@@ -64,9 +68,12 @@ const api: Api = {
         listTransactions: '/transactions/',
         transactionDetail: (id: number) => `/transaction/${id}/`,
 
+        listTransfers: '/transfers/',
+        transferDetail: (id: number) => `/transfer/${id}/`,
+
         listTasks: '/tasks/',
         taskDetail: (id: number) => `/tasks/${id}/`,
-        
+
         listTodos: '/todos/',
         todoDetail: (id: number) => `/todos/${id}/`,
 
@@ -95,7 +102,7 @@ const api: Api = {
 
         return headers;
     },
-    
+
     fetch: async (endpoint: string, options: RequestInit & { withAuth?: boolean } = {}) => {
         const { withAuth = true, headers, ...rest } = options;
         return fetch(`${api.baseUrl}${endpoint}`, {

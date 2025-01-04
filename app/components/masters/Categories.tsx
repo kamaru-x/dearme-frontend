@@ -92,8 +92,6 @@ const Categories = ({ api, showDeleteModal }: Props) => {
                             <option value="" className="dark:bg-gray-700">Select Type</option>
                             <option value="credit" className="dark:bg-gray-700">Credit</option>
                             <option value="debit" className="dark:bg-gray-700">Debit</option>
-                            <option value="credit_transfer" className="dark:bg-gray-700">Credit Transfer</option>
-                            <option value="debit_transfer" className="dark:bg-gray-700">Debit Transfer</option>
                         </select>
                         <input type="text" id="name" name="name" value={categoryData.name} onChange={handleChange} placeholder="Category Name" className="form-input w-full dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:placeholder-gray-400"/>
                         <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
@@ -121,7 +119,7 @@ const Categories = ({ api, showDeleteModal }: Props) => {
                                         {category.name}
                                     </td>
                                     <td className="min-w-24 text-right flex items-center space-x-2 whitespace-nowrap">
-                                        <button 
+                                        <button
                                             onClick={() => handleDeleteClick('category', category.id, () => deleteCategory(category.id))}
                                             className="p-1 text-red-600 hover:text-red-800 dark:text-red-500 dark:hover:text-red-400 transition-colors duration-150"
                                             title="Delete category"
