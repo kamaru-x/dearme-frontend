@@ -33,7 +33,7 @@ export const refreshAccessToken = async (refreshToken: string): Promise<string |
 
         const data = await response.json();
         const oneDay = 24 * 60 * 60;
-        document.cookie = `token=${data.access}; path=/; max-age=${oneDay}`;
+        document.cookie = `token=${data.access}; path=/todo; max-age=${oneDay}`;
         
         return data.access;
     } catch (error) {

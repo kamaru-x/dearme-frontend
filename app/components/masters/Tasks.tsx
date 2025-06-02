@@ -1,21 +1,101 @@
 import React, { useState } from 'react'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import {
+    DndContext,
+    closestCenter,
+    KeyboardSensor,
+    PointerSensor,
+    useSensor,
+    useSensors,
+    DragEndEvent
+} from '@dnd-kit/core'
+import {
+    arrayMove,
+    SortableContext,
+    sortableKeyboardCoordinates,
+    useSortable,
+    verticalListSortingStrategy
+} from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
+import { Api } from '@/app/context/ApiContext'
 
 interface Task {
     id: number;
     title: string;
+    order: number;
+}
+
+interface ApiResponse {
+    status: 'success' | 'error';
+    message: string;
+    data?: any;
 }
 
 interface Props {
-    api: any;
+    api: Api;
     showDeleteModal: (itemType: string, onConfirm: () => void) => void;
 }
 
-const Tasks = ({ api, showDeleteModal }: Props) => {
+interface SortableTaskProps {
+    id: number;
+    index: number;
+    task: Task;
+    onDelete: (id: number) => Promise<void>;
+    showDeleteModal: (itemType: string, onConfirm: () => void) => void;
+}
 
+const SortableTask = ({ task, index, onDelete, showDeleteModal }: SortableTaskProps) => {
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+    } = useSortable({ id: task.id });
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+    };
+
+    return (
+        <div
+            ref={setNodeRef}
+            style={style}
+            {...attributes}
+            {...listeners}
+            className="flex justify-between items-center p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-150 ease-in-out rounded-lg border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-md hover:shadow-lg mb-3 cursor-move"
+        >
+            <div className="min-w-24 text-center text-sm text-gray-900 dark:text-gray-200 whitespace-nowrap">
+                {index + 1}
+            </div>
+            <div className="min-w-48 text-center text-sm text-gray-900 dark:text-gray-200 whitespace-nowrap">
+                {task.title}
+            </div>
+            <div className="min-w-24 text-right flex items-center space-x-2 whitespace-nowrap">
+                <button 
+                    onClick={() => showDeleteModal('task', () => onDelete(task.id))}
+                    className="p-1 text-red-600 hover:text-red-800 dark:text-red-500 dark:hover:text-red-400 transition-colors duration-150"
+                    title="Delete task"
+                >
+                    <i className="fas fa-trash-alt w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+    );
+};
+
+const Tasks: React.FC<Props> = ({ api, showDeleteModal }) => {
     const [tasks, setTasks] = useState<Task[]>([])
     const [taskData, setTaskData] = useState({title: ''})
+
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates,
+        })
+    );
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target
@@ -73,8 +153,43 @@ const Tasks = ({ api, showDeleteModal }: Props) => {
         }
     }
 
-    const handleDeleteClick = (itemType: string, id: number, deleteFunction: () => void) => {
-        showDeleteModal(itemType, deleteFunction);
+    const handleDragEnd = async (event: DragEndEvent) => {
+        const { active, over } = event;
+        
+        if (over && active.id !== over.id) {
+            setTasks((items) => {
+                const oldIndex = items.findIndex((item) => item.id === active.id);
+                const newIndex = items.findIndex((item) => item.id === over.id);
+                
+                const newItems = arrayMove(items, oldIndex, newIndex);
+                
+                // Update backend
+                const taskOrders = newItems.map((task, index) => ({
+                    id: task.id,
+                    order: index
+                }));
+
+                api.fetch(api.endpoints.updateTaskOrder, {
+                    method: 'PUT',
+                    body: JSON.stringify({ task_orders: taskOrders })
+                }).then((response: Response) => response.json())
+                .then((result: ApiResponse) => {
+                    if (result.status === 'error') {
+                        toast.error(result.message);
+                        fetchTasks(); // Revert to original order if update fails
+                    } else {
+                        toast.success('Task order updated successfully');
+                    }
+                })
+                .catch((error: Error) => {
+                    console.log('Error updating task order:', error);
+                    toast.error('Failed to update task order');
+                    fetchTasks(); // Revert to original order if update fails
+                });
+
+                return newItems;
+            });
+        }
     };
 
     React.useEffect(() => {fetchTasks();}, [api]);
@@ -92,38 +207,31 @@ const Tasks = ({ api, showDeleteModal }: Props) => {
                     </div>
                 </form>
             </div>
-
-            { tasks && tasks.length > 0 ? (
-                <div className="overflow-x-auto pb-2">
-                    <table className="w-full min-w-[640px]">
-                        <tbody className="space-y-3 mb-5">
-                            {tasks.map((task: Task, index: number) => (
-                                <tr key={index} className="flex justify-between items-center p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-150 ease-in-out rounded-lg border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-md hover:shadow-lg mb-3">
-                                    <td className="min-w-24 text-center text-sm text-gray-900 dark:text-gray-200 whitespace-nowrap">
-                                        {index + 1}
-                                    </td>
-                                    <td className="min-w-48 text-center text-sm text-gray-900 dark:text-gray-200 whitespace-nowrap">
-                                        {task.title}
-                                    </td>
-                                    <td className="min-w-24 text-right flex items-center space-x-2 whitespace-nowrap">
-                                        <button 
-                                            onClick={() => handleDeleteClick('task', task.id, () => deleteTask(task.id))}
-                                            className="p-1 text-red-600 hover:text-red-800 dark:text-red-500 dark:hover:text-red-400 transition-colors duration-150"
-                                            title="Delete task"
-                                        >
-                                            <i className="fas fa-trash-alt w-5 h-5"></i>
-                                        </button>
-                                    </td>
-                                </tr>
+            <div className="overflow-x-auto">
+                <DndContext
+                    sensors={sensors}
+                    collisionDetection={closestCenter}
+                    onDragEnd={handleDragEnd}
+                >
+                    <SortableContext
+                        items={tasks.map((task) => task.id)}
+                        strategy={verticalListSortingStrategy}
+                    >
+                        <div className="space-y-3 mb-5">
+                            {tasks.map((task, index) => (
+                                <SortableTask
+                                    key={task.id}
+                                    id={task.id}
+                                    index={index}
+                                    task={task}
+                                    onDelete={deleteTask}
+                                    showDeleteModal={showDeleteModal}
+                                />
                             ))}
-                        </tbody>
-                    </table>
-                </div>
-            ) : (
-                <div className="flex flex-col items-center justify-center p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-                    <p className="text-gray-600 dark:text-gray-400 text-lg">No checklist available</p>
-                </div>
-            )}
+                        </div>
+                    </SortableContext>
+                </DndContext>
+            </div>
         </>
     )
 }

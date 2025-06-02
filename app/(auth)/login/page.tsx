@@ -34,7 +34,7 @@ export default function Login() {
         document.cookie = `token=${data.access}; path=/; max-age=${oneDay}`;
         document.cookie = `refresh_token=${data.refresh}; path=/; max-age=${oneMonth}`;
 
-        router.push('/')
+        router.push('/todo')
 
         router.refresh()
     } catch (err) {

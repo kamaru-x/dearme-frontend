@@ -44,6 +44,11 @@ interface TransactionOverview {
     savings: number
 }
 
+interface AccountBalance{
+    name: string,
+    balance: number
+}
+
 const TransactionsPage = () => {
     const api = useApi();
     const [activeTab, setActiveTab] = useState('ACCOUNTS OVERVIEW');
@@ -53,6 +58,7 @@ const TransactionsPage = () => {
     const [overview, setOverview] = useState<TransactionOverview>({credited: 0, debited: 0, balance: 0, savings: 0})
     const [filters, setFilters] = useState<{fromDate: string, toDate: string, account: string, category: string}>({fromDate: '', toDate: '', account: '', category: ''})
     const [editTransaction, setEditTransaction] = useState<Transaction | null>(null)
+    const [accountBalance, setAccountBalance] = useState<AccountBalance[]>([])
 
     const fetchTransactions = async () => {
         try {
@@ -93,6 +99,19 @@ const TransactionsPage = () => {
         }
     }
 
+    const fetchAccountBalance = async () => {
+        try {
+            let url = api.endpoints.accountsOverview;    
+            const response = await api.fetch(url)
+            const result = await response.json()
+            setAccountBalance(result.data || [])
+        } catch (error) {
+            console.log('Error fetching account balance:', error)
+            setAccountBalance([])
+            toast.error('Failed to fetch account balance')
+        }
+    }
+
     const handleFilterChange = (newFilters: typeof filters) => {
         setFilters(newFilters)
     }
@@ -105,17 +124,17 @@ const TransactionsPage = () => {
     React.useEffect(() => {
         fetchTransactions()
         fetchTransfers()
+        fetchAccountBalance()
     }, [api, filters])
 
     return (
         <div className="min-h-screen mx-5">
             <ToastContainer position="top-right" autoClose={3000} />
             <div className="w-full">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-8">
-                    <OverviewCard color="bg-gradient-to-r from-green-400 to-green-500" icon="fas fa-indian-rupee-sign" title="Total Income" value={overview.credited}/>
-                    <OverviewCard color="bg-gradient-to-r from-red-400 to-red-500" icon="fas fa-indian-rupee-sign" title="Total Expense" value={overview.debited}/>
-                    <OverviewCard color="bg-gradient-to-r from-yellow-400 to-yellow-500" icon="fas fa-indian-rupee-sign" title="Total Balance" value={overview.balance}/>
-                    <OverviewCard color="bg-gradient-to-r from-blue-400 to-blue-500" icon="fas fa-indian-rupee-sign" title="Total Savings" value={overview.savings}/>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+                    {accountBalance.map((account, index) => (
+                        <OverviewCard key={index} color="bg-gradient-to-r from-blue-400 to-blue-500" icon="fas fa-indian-rupee-sign" title={account.name} value={account.balance}/>
+                    ))}
                 </div>
 
                 <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mt-8">

@@ -25,6 +25,7 @@ interface ApiEndpoints {
 
     listTasks: string;
     taskDetail: (id: number) => string;
+    updateTaskOrder: string;
 
     listTodos: string;
     todoDetail: (id: number) => string;
@@ -39,7 +40,7 @@ interface ApiEndpoints {
     journalDetail: (date: string) => string;
 }
 
-interface Api {
+export interface Api {
     baseUrl: string;
     endpoints: ApiEndpoints;
 
@@ -73,6 +74,7 @@ const api: Api = {
 
         listTasks: '/tasks/',
         taskDetail: (id: number) => `/tasks/${id}/`,
+        updateTaskOrder: '/tasks/update-order/',
 
         listTodos: '/todos/',
         todoDetail: (id: number) => `/todos/${id}/`,
