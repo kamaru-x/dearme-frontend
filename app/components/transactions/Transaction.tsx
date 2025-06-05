@@ -136,6 +136,7 @@ const Transaction = ({ setCreate, fetchTransactions, editData }: TransactionProp
             toast.success(result.message || 'Transaction saved successfully');
             setCreate(false);
             fetchTransactions();
+            fetchAccounts();
         } catch (error) {
             console.error('Error saving transaction:', error);
             toast.error(error instanceof Error ? error.message : 'Failed to save transaction');

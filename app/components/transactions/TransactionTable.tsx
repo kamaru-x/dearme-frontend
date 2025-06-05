@@ -70,7 +70,7 @@ const TransactionTable = ({ show_btn, transactions, api, onUpdate, onEdit }: Tra
                                     <td className="w-20 text-left text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
                                         {index + 1}
                                     </td>
-                                    <td className="w-48 text-center text-sm text-gray-900 dark:text-gray-100 whitespace-nowrap">
+                                    <td className="w-64 md:w-48 text-center text-sm text-gray-900 dark:text-gray-100 whitespace-nowrap">
                                         {transaction.title}
                                     </td>
                                     <td className="w-32 text-center whitespace-nowrap">
